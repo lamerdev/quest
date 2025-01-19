@@ -10,7 +10,7 @@
             box-sizing: border-box;
         }
 
-        /* Медиа-запросы для разных устройств */
+        /* diff */
         
         /* Для мобильных устройств */
         @media (max-width: 480px) {
@@ -27,7 +27,7 @@
             }
 
             .side-art {
-                display: none; /* Скрываем боковые арты на мобильных */
+                display: none; /* hide sides */
             }
 
             .gem-sketch, .ascii-art {
@@ -41,7 +41,7 @@
             }
 
             .ascii-decoration {
-                display: none; /* Скрываем декоративные элементы */
+                display: none; /* hide decs */
             }
 
             .section {
@@ -49,7 +49,7 @@
             }
         }
 
-        /* Для планшетов */
+        /* tablet */
         @media (min-width: 481px) and (max-width: 768px) {
             .chronicle {
                 padding: 10px;
@@ -76,7 +76,7 @@
             }
         }
 
-        /* Для небольших десктопов */
+        /* smalldesktop */
         @media (min-width: 769px) and (max-width: 1024px) {
             .chronicle {
                 padding: 15px;
@@ -95,7 +95,7 @@
             }
         }
 
-        /* Для больших экранов */
+        /* bigscreens */
         @media (min-width: 1025px) {
             .chronicle {
                 max-width: 1200px;
@@ -106,7 +106,7 @@
             }
         }
 
-        /* Для устройств с тёмной темой */
+        /* darktheme */
         @media (prefers-color-scheme: dark) {
             body {
                 background-color: #050508;
@@ -117,7 +117,7 @@
             }
         }
 
-        /* Для печати */
+        /* print */
         @media print {
             body {
                 background: white;
@@ -335,7 +335,7 @@
     </style>
 </head>
 <body>
-    <!-- Фоновая матрица -->
+    <!-- Matrix Reloaded -->
     <div class="ascii-decoration" style="bottom: 10px; left: 10px; font-size: 12px; color: #9c4c6a;">
         //^\\
        //   \\
@@ -359,7 +359,7 @@
         ◇◈◇◈◇◈◇◈◇◈◇◈◇◈◇◈
     </div>
 
-    <!-- Декоративные драконы по углам -->
+    <!-- Could be dragons -->
     <div class="ascii-decoration" style="top: 10px; left: 10px; font-size: 12px; color: #9c4c6a;">
               /\    /\
              /  \  /  \
@@ -379,7 +379,7 @@
     </div>
 
     <div class="chronicle">
-        <!-- Декоративные элементы -->
+        <!-- Decorations -->
         <div class="ascii-decoration" style="top: 20px; left: 20px;">
             ◈────◇────◈
             │    │    │
@@ -482,7 +482,22 @@
                     → Sometimes I leave small marks near valuable gem locations
                 </div>
             </div>
-
+ /* Hidden Easter Egg - Eternal Seeker's Message */
+        /* 
+        =======================================
+        Congratulations, skilled explorer!
+        You've found the hidden gem in the code.
+        Your dedication to uncovering secrets
+        marks you as a true Eternal Seeker.
+        
+        Share your discovery on Twitter
+        @EternalGemFindr with your journey details
+        to claim your 30$ reward.
+        
+        Remember: The best treasures are often
+        hidden in plain sight.
+        =======================================
+        */
             <div class="section">
                 <div class="observer-note">
                     Would they accept me if they knew? Perhaps one day... but for now, I am content being the shadow that watches over shadows, the unseen guardian of these remarkable beings.
@@ -495,7 +510,7 @@
                 </div>
             </div>
 
-            <!-- Новая секция с историей о драконе -->
+            <!-- DragonStoryBegins -->
             <div class="section">
                 <div class="gem-sketch" style="color: #9c4c6a;">
     /\\\\\\//////////\\\\\\
@@ -548,7 +563,7 @@
                 </div>
             </div>
 
-            <!-- Новая секция с историей о драконе -->
+            <!-- DragonStory -->
             <div class="section">
                 <div class="gem-sketch" style="color: #9c4c6a;">
     /\\\\\\//////////\\\\\\
