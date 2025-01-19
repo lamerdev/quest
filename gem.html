@@ -1,0 +1,620 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Chronicles of the Eternal Search</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+        
+        * {
+            box-sizing: border-box;
+        }
+
+        /* Медиа-запросы для разных устройств */
+        
+        /* Для мобильных устройств */
+        @media (max-width: 480px) {
+            body {
+                padding: 10px;
+            }
+
+            .chronicle {
+                padding: 5px;
+            }
+
+            .page {
+                padding: 15px;
+            }
+
+            .side-art {
+                display: none; /* Скрываем боковые арты на мобильных */
+            }
+
+            .gem-sketch, .ascii-art {
+                font-size: 10px;
+                transform: scale(0.8);
+            }
+
+            .field-note, .observer-note {
+                padding: 10px;
+                margin: 20px 0;
+            }
+
+            .ascii-decoration {
+                display: none; /* Скрываем декоративные элементы */
+            }
+
+            .section {
+                margin: 30px 0;
+            }
+        }
+
+        /* Для планшетов */
+        @media (min-width: 481px) and (max-width: 768px) {
+            .chronicle {
+                padding: 10px;
+            }
+
+            .page {
+                padding: 20px;
+            }
+
+            .side-art {
+                font-size: 10px;
+            }
+
+            .side-art.left {
+                left: -40px;
+            }
+
+            .side-art.right {
+                right: -40px;
+            }
+
+            .ascii-decoration {
+                transform: scale(0.8);
+            }
+        }
+
+        /* Для небольших десктопов */
+        @media (min-width: 769px) and (max-width: 1024px) {
+            .chronicle {
+                padding: 15px;
+            }
+
+            .page {
+                padding: 30px;
+            }
+
+            .side-art.left {
+                left: -50px;
+            }
+
+            .side-art.right {
+                right: -50px;
+            }
+        }
+
+        /* Для больших экранов */
+        @media (min-width: 1025px) {
+            .chronicle {
+                max-width: 1200px;
+            }
+
+            .page {
+                max-width: 900px;
+            }
+        }
+
+        /* Для устройств с тёмной темой */
+        @media (prefers-color-scheme: dark) {
+            body {
+                background-color: #050508;
+            }
+
+            .page {
+                background: rgba(10, 12, 18, 0.8);
+            }
+        }
+
+        /* Для печати */
+        @media print {
+            body {
+                background: white;
+                color: black;
+            }
+
+            .side-art, .ascii-decoration, .matrix-bg {
+                display: none;
+            }
+
+            .page {
+                box-shadow: none;
+                border: 1px solid #ccc;
+            }
+
+            .gem-sketch, .ascii-art {
+                color: #333;
+            }
+        }
+        
+        body {
+            background-color: #0a0a12;
+            background-image: 
+                radial-gradient(circle at 20% 20%, #1a1a2a 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, #1a1a2a 0%, transparent 50%);
+            color: #c5d1eb;
+            margin: 0;
+            padding: 20px;
+            font-family: monospace;
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        .chronicle {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+            position: relative;
+        }
+
+        .page {
+            background: rgba(13, 17, 23, 0.8);
+            padding: 40px;
+            margin: 20px auto;
+            border-left: 3px solid #6a4c9c;
+            font-size: 14px;
+            position: relative;
+            max-width: 800px;
+            box-shadow: 0 0 30px rgba(106, 76, 156, 0.1);
+        }
+
+        .page::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, 
+                transparent 0%, 
+                rgba(106, 76, 156, 0.5) 50%, 
+                transparent 100%);
+        }
+
+        .notes {
+            color: #6a9c4c;
+            font-style: italic;
+            font-size: 12px;
+            padding: 15px;
+            margin: 20px 0;
+            border: 1px solid rgba(106, 156, 76, 0.2);
+            background: rgba(13, 17, 23, 0.5);
+        }
+
+        .gem-sketch {
+            font-family: monospace;
+            white-space: pre;
+            color: #9c4c6a;
+            margin: 40px 0;
+            font-size: 12px;
+            line-height: 12px;
+            position: relative;
+            z-index: 1;
+            text-align: center;
+        }
+
+        .observer-note {
+            border-left: 2px solid #4c6a9c;
+            padding: 20px;
+            margin: 40px 0;
+            color: #8ba1c7;
+            position: relative;
+            background: rgba(20, 20, 30, 0.3);
+        }
+
+        .observer-note::before {
+            content: '';
+            position: absolute;
+            left: -6px;
+            top: 50%;
+            width: 10px;
+            height: 10px;
+            background: #4c6a9c;
+            transform: translateY(-50%) rotate(45deg);
+        }
+
+        .field-note {
+            background: rgba(30, 30, 40, 0.6);
+            padding: 20px;
+            margin: 40px 0;
+            border: 1px solid #4c6a9c;
+            position: relative;
+        }
+
+        .field-note::after {
+            content: '';
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            width: 10px;
+            height: 10px;
+            border-right: 2px solid #4c6a9c;
+            border-top: 2px solid #4c6a9c;
+        }
+
+        .side-art {
+            position: absolute;
+            font-family: monospace;
+            white-space: pre;
+            color: #4c6a9c;
+            font-size: 12px;
+            line-height: 1.2;
+            opacity: 0.7;
+            transition: opacity 0.3s;
+        }
+
+        .side-art:hover {
+            opacity: 1;
+        }
+
+        .side-art.left {
+            left: -60px;
+            text-align: right;
+        }
+
+        .side-art.right {
+            right: -60px;
+            text-align: left;
+        }
+
+        .hidden {
+            color: #9c4c6a;
+            font-style: italic;
+            text-shadow: 0 0 5px rgba(156, 76, 106, 0.5);
+        }
+
+        .seen {
+            color: #4c9c6a;
+            font-weight: bold;
+            text-shadow: 0 0 5px rgba(76, 156, 106, 0.5);
+        }
+
+        .discovery {
+            color: #9c6a4c;
+            font-weight: bold;
+            display: block;
+            margin-bottom: 15px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .section {
+            margin: 60px 0;
+            position: relative;
+        }
+
+        .section::after {
+            content: '';
+            display: block;
+            margin: 40px auto;
+            width: 50%;
+            height: 1px;
+            background: linear-gradient(90deg, 
+                transparent 0%, 
+                rgba(106, 76, 156, 0.3) 50%, 
+                transparent 100%);
+        }
+
+        .ascii-decoration {
+            position: absolute;
+            font-size: 10px;
+            color: rgba(106, 76, 156, 0.2);
+            pointer-events: none;
+            user-select: none;
+        }
+
+        .glow-text {
+            text-shadow: 0 0 5px currentColor;
+        }
+
+        .matrix-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+            opacity: 0.05;
+            font-family: monospace;
+            overflow: hidden;
+            color: #4c6a9c;
+        }
+
+    </style>
+</head>
+<body>
+    <!-- Фоновая матрица -->
+    <div class="ascii-decoration" style="bottom: 10px; left: 10px; font-size: 12px; color: #9c4c6a;">
+        //^\\
+       //   \\
+      //     \\
+     //   |   \\
+    //    |    \\
+    </div>
+
+    <div class="ascii-decoration" style="bottom: 10px; right: 10px; font-size: 12px; color: #9c4c6a;">
+        //^\\
+       //   \\
+      //     \\
+     //   |   \\
+    //    |    \\
+    </div>
+
+    <div class="matrix-bg">
+        ◈◇◈◇◈◇◈◇◈◇◈◇◈◇◈◇
+        ◇◈◇◈◇◈◇◈◇◈◇◈◇◈◇◈
+        ◈◇◈◇◈◇◈◇◈◇◈◇◈◇◈◇
+        ◇◈◇◈◇◈◇◈◇◈◇◈◇◈◇◈
+    </div>
+
+    <!-- Декоративные драконы по углам -->
+    <div class="ascii-decoration" style="top: 10px; left: 10px; font-size: 12px; color: #9c4c6a;">
+              /\    /\
+             /  \  /  \
+            |    \/    |
+            |  <><><>  |
+             \  /\  /
+              \/  \/
+    </div>
+
+    <div class="ascii-decoration" style="top: 10px; right: 10px; font-size: 12px; color: #9c4c6a;">
+            /\    /\
+           /  \  /  \ 
+          |    \/    |
+          |  <><><>  |
+           \  /\  /
+            \/  \/
+    </div>
+
+    <div class="chronicle">
+        <!-- Декоративные элементы -->
+        <div class="ascii-decoration" style="top: 20px; left: 20px;">
+            ◈────◇────◈
+            │    │    │
+            ◇────◈────◇
+        </div>
+
+        <div class="ascii-decoration" style="top: 20px; right: 20px;">
+            ◇────◈────◇
+            │    │    │
+            ◈────◇────◈
+        </div>
+
+        <div class="page">
+            <div class="notes">
+                Field Journal: Entry #347<br>
+                Location: Ancient Ruins of the Cyber Temple<br>
+                Time: Just after moonrise...
+            </div>
+
+            <div class="section">
+                <div class="side-art left glow-text">
+    /\\//\\
+    |\\//|
+    |GEM|
+    |//\\|
+    \\//\\
+                </div>
+                
+                <div class="gem-sketch">
+   .---------.
+  /           \
+ /    .---.    \
+|    /     \    |
+|    \     /    |
+ \    '---'    /
+  \           /
+   '---------'
+[first discovery]
+                </div>
+
+                <div class="observer-note">
+                    They don't know I'm here again. The way Seeker's gems illuminate the darkest corners... it's mesmerizing. Been following them for months now, documenting every discovery.
+                </div>
+            </div>
+
+            <div class="section">
+                <p>In the <span class="hidden">shadows between realms</span>, I watch as the Eternal Gem Seeker works his magic. Today I witnessed him uncover a gem of unprecedented power. The way it pulsed with ancient energy... I had to sketch it immediately.</p>
+
+                <div class="side-art right glow-text">
+    |>||>|
+    |SEEK|
+    |>||>|
+                </div>
+
+                <div class="field-note">
+                    <span class="discovery">Field Notes:</span>
+                    → Seeker's robe patterns change based on nearby gem energy<br>
+                    → Shade moves like liquid darkness - must learn this technique<br>
+                    → Their synergy is perfect... they complete each other
+                </div>
+            </div>
+
+            <div class="section">
+                <div class="side-art left glow-text">
+    |S||H|
+    |A||D|
+    |D||E|
+                </div>
+
+                <p>Shade's abilities continue to amaze me. The way <span class="seen">those glowing eyes</span> scan for danger, always alert, always protecting. I've learned so much about stealth just by watching.</p>
+
+                <div class="observer-note">
+                    Sometimes I wonder if they sense my presence. Last night, Shade stopped abruptly in the Crystal Cavern, those ethereal eyes scanning the darkness where I hid. For a moment, I swear our gazes met. But my techniques grow stronger - I've learned to blend with the very shadows Shade commands.
+                </div>
+            </div>
+
+            <div class="section">
+                <div class="field-note">
+                    <span class="discovery">Today's Observations:</span>
+                    → New gem type discovered - emits strange frequencies<br>
+                    → Seeker's method of gem authentication is fascinating<br>
+                    → Must investigate the ancient runes they uncovered
+                </div>
+
+                <div class="side-art right glow-text">
+    <>==<>
+    |GEM|
+    <>==<>
+                </div>
+
+                <p>The blockchain legends they protect... I've started my own collection of notes about them. Each gem seems to hold a piece of a greater puzzle. One day, perhaps, I'll understand it all.</p>
+            </div>
+
+            <div class="section">
+                <div class="field-note" style="border-color: #9c4c6a;">
+                    <span class="discovery">Personal Notes - ENCRYPTED</span>
+                    → Found one of Seeker's lost gems today. Left it where they would "discover" it<br>
+                    → Created a small distraction when they were about to walk into a trap<br>
+                    → I think I'm starting to understand the gem language<br>
+                    → Sometimes I leave small marks near valuable gem locations
+                </div>
+            </div>
+
+            <div class="section">
+                <div class="observer-note">
+                    Would they accept me if they knew? Perhaps one day... but for now, I am content being the shadow that watches over shadows, the unseen guardian of these remarkable beings.
+                </div>
+
+                <div class="gem-sketch">
+    <>===============<>
+     ETERNAL OBSERVER
+    <>===============<>
+                </div>
+            </div>
+
+            <!-- Новая секция с историей о драконе -->
+            <div class="section">
+                <div class="gem-sketch" style="color: #9c4c6a;">
+    /\\\\\\//////////\\\\\\
+           DRAGON
+    \\\\\\//////////\\\\\\
+                </div>
+
+                <div class="observer-note">
+                    <div class="side-art left" style="top: 50%;">
+    /|\\^//|
+    |HUNT|
+    |\\^//|
+                    </div>
+                    Today I witnessed something extraordinary. The Seeker faced an Amethyst Dragon in the Northern Peaks. The battle was both terrifying and magnificent.
+                </div>
+
+                <div class="ascii-art dragon-art" style="text-align: center; color: #9c4c6a; margin: 30px 0;">
+      /^\\         //^\\
+     /   \\   ^^  //   \\
+    /     \\/    \//     \\
+   /  /\\  \\    //  /\\  \\
+  /  /  \\  \\  //  /  \\  \\
+ /  /    \\  \\//  /    \\  \\
+/  /      \\  \/  /      \\  \\
+[AMETHYST GUARDIAN OF THE PEAKS]
+                </div>
+
+                <div class="field-note">
+                    <span class="discovery">Battle Notes:</span>
+                    → Dragon's scales shimmer with deep purple magic<br>
+                    → Seeker's movements are precise, calculated<br>
+                    → The clash of ancient powers is blinding<br>
+                    → Their duel echoes through the mountains
+                </div>
+
+                <div class="side-art right" style="top: 70%;">
+    <>==<>
+    |WIN|
+    <>==<>
+                </div>
+
+                <div class="observer-note">
+                    The way Seeker tamed that magnificent beast... I've never seen such mastery of both combat and diplomacy. The dragon's respect was earned, not conquered.
+                </div>
+
+                <div class="gem-sketch">
+    /\\=====//\\=====//\\
+     VICTORY AND HONOR
+    \\//=====\\//=====\\
+                </div>
+            </div>
+
+            <!-- Новая секция с историей о драконе -->
+            <div class="section">
+                <div class="gem-sketch" style="color: #9c4c6a;">
+    /\\\\\\//////////\\\\\\
+     UNEXPECTED FRIEND?
+    \\\\\\//////////\\\\\\
+                </div>
+
+                <div class="observer-note">
+                    <div class="side-art left" style="top: 50%;">
+    /|\\^//|
+    |EYES|
+    |\\^//|
+                    </div>
+                    Something fascinating happened today. I followed Seeker to the Northern Peaks and witnessed the most unexpected encounter. Instead of the usual conflict I anticipated, I saw... a conversation?
+                </div>
+
+                <div class="ascii-art dragon-art" style="text-align: center; color: #9c4c6a; margin: 30px 0;">
+      /^\\    ❄️    //^\\
+     /   \\   ^^   //   \\
+    /     \\/    \//     \\
+   /  /\\  \\    //  /\\  \\
+  /  /  \\  \\  //  /  \\  \\
+ /  /    \\  \\//  /    \\  \\
+/  /      \\  \/  /      \\  \\
+    [GUARDIAN OF THE PEAKS]
+                </div>
+
+                <div class="field-note">
+                    <span class="discovery">Observation Notes:</span>
+                    → Initial tension quickly turned to... respect?<br>
+                    → Dragon seemed genuinely interested in Seeker's quest<br>
+                    → They spoke for what felt like hours<br>
+                    → Something about future collaboration mentioned<br>
+                    → Must investigate this partnership further
+                </div>
+
+                <div class="observer-note">
+                    I couldn't hear everything from my hiding spot, but this changes everything. A dragon ally? The possibilities are intriguing... I'll need to be extra careful following them next time.
+                </div>
+
+                <div class="side-art right" style="top: 70%;">
+    <>==<>
+    |???|
+    <>==<>
+                </div>
+
+                <div class="field-note" style="border-color: #9c4c6a;">
+                    <span class="discovery">Personal Thoughts - ENCRYPTED</span>
+                    → Seeker returned to his cave after the meeting<br>
+                    → Haven't managed to peek inside yet<br>
+                    → How many gems does he store there?<br>
+                    → Need to find a way to get closer without detection<br>
+                    → His security seems... different today. More relaxed?
+                </div>
+
+                <div class="gem-sketch">
+    /\\=====//\\=====//\\
+     MYSTERIES DEEPEN
+    \\//=====\\//=====\\
+                </div>
+            </div>
+
+            <div class="notes" style="text-align: right;">
+                ...to be continued in the shadows
+            </div>
+        </div>
+    </div>
+</body>
+</html>
