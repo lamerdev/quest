@@ -1,775 +1,373 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Chronicles of the Brotherhood's Cave</title>
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
-        
-        /* Hidden Spoiler Button */
-        .hidden-spoiler {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            width: 30px;
-            height: 30px;
-            background: transparent;
-            border: none;
-            cursor: pointer;
-            opacity: 0.1;
-            transition: all 0.3s ease;
-            transform: scale(1);
-            text-shadow: 0 0 5px #6a4c9c;
-            z-index: 1000;
-        }
-
-        .hidden-spoiler:hover {
-            opacity: 0.6;
-            transform: scale(1.2);
-            text-shadow: 0 0 15px #6a4c9c;
-        }
-
-        .hidden-spoiler::before {
-            content: "◈";
-            font-size: 20px;
-            color: #6a4c9c;
-        }
-
-        /* Easter Egg Modal */
-        .easter-egg-modal {
-            display: none;
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            background: rgba(10, 10, 18, 0.98);
-            padding: 40px;
-            border: 2px solid #6a4c9c;
-            box-shadow: 0 0 30px rgba(106, 76, 156, 0.5);
-            z-index: 1001;
-            max-width: 600px;
-            animation: modalAppear 0.5s ease-out;
-            border-radius: 10px;
-        }
-
-        .modal-gems {
-            position: absolute;
-            font-size: 24px;
-            color: #9c4c6a;
-            animation: sparkle 2s infinite;
-        }
-
-        .modal-gems.top-left { top: 10px; left: 10px; }
-        .modal-gems.top-right { top: 10px; right: 10px; }
-        .modal-gems.bottom-left { bottom: 10px; left: 10px; }
-        .modal-gems.bottom-right { bottom: 10px; right: 10px; }
-
-        @keyframes sparkle {
-            0%, 100% { opacity: 0.3; transform: scale(1); }
-            50% { opacity: 1; transform: scale(1.2); }
-        }
-
-        .close-button {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            width: 30px;
-            height: 30px;
-            border: none;
-            background: none;
-            color: #6a4c9c;
-            font-size: 24px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 50%;
-        }
-
-        .close-button:hover {
-            color: #9c4c6a;
-            transform: rotate(90deg);
-            background: rgba(106, 76, 156, 0.1);
-        }
-
-        .celebration-gems {
-            text-align: center;
-            margin: 15px 0;
-            font-size: 20px;
-            color: #6a4c9c;
-            animation: floatGems 3s infinite ease-in-out;
-        }
-
-        @keyframes floatGems {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-10px); }
-        }
-
-        .magic-border {
-            position: absolute;
-            top: -5px;
-            left: -5px;
-            right: -5px;
-            bottom: -5px;
-            border: 2px solid #6a4c9c;
-            border-radius: 12px;
-            animation: borderGlow 4s infinite linear;
-            pointer-events: none;
-        }
-
-        @keyframes borderGlow {
-            0%, 100% { border-color: #6a4c9c; }
-            50% { border-color: #9c4c6a; }
-        }
-
-        .easter-egg-modal.active {
-            display: block;
-        }
-
-        @keyframes modalAppear {
-            from {
-                opacity: 0;
-                transform: translate(-50%, -50%) scale(0.9);
-            }
-            to {
-                opacity: 1;
-                transform: translate(-50%, -50%) scale(1);
-            }
-        }
-
-        .easter-egg-content {
-            color: #c5d1eb;
-            font-family: monospace;
-            text-align: center;
-            position: relative;
-        }
-
-        .easter-egg-close {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            background: none;
-            border: none;
-            color: #6a4c9c;
-            cursor: pointer;
-            font-size: 20px;
-            opacity: 0.7;
-            transition: opacity 0.3s ease;
-        }
-
-        .easter-egg-close:hover {
-            opacity: 1;
-        }
-
-        .secret-message {
-            white-space: pre-line;
-            margin: 20px 0;
-            padding: 20px;
-            border: 1px solid rgba(106, 76, 156, 0.3);
-            background: rgba(10, 10, 18, 0.5);
-        }
-        
-        body {
-            background-color: #0a0a12;
-            background-image: 
-                radial-gradient(circle at 20% 20%, #1a1a2a 0%, transparent 50%),
-                radial-gradient(circle at 80% 80%, #1a1a2a 0%, transparent 50%);
-            color: #c5d1eb;
-            margin: 0;
-            padding: 20px;
-            font-family: monospace;
-            line-height: 1.6;
-            min-height: 100vh;
-            cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 20 20'%3E%3Ccircle cx='10' cy='10' r='8' fill='none' stroke='%236a4c9c' stroke-width='2'/%3E%3C/svg%3E"), auto;
-        }
-
-        /* Spider Animation */
-        .spider {
-            position: fixed;
-            width: 20px;
-            height: 20px;
-            pointer-events: none;
-            z-index: 1000;
-            animation: moveSpider 20s linear infinite;
-        }
-
-        .spider::before {
-            content: "🕷️";
-            font-size: 20px;
-        }
-
-        @keyframes moveSpider {
-            0% { transform: translate(0, -100%); }
-            25% { transform: translate(100vw, 0); }
-            50% { transform: translate(0, 100vh); }
-            75% { transform: translate(-100vw, 0); }
-            100% { transform: translate(0, -100%); }
-        }
-
-        /* Cave Ambience */
-        .stalactite {
-            position: fixed;
-            width: 2px;
-            background: linear-gradient(to bottom, #4c6a9c, transparent);
-            top: 0;
-            animation: drip 3s infinite;
-        }
-
-        @keyframes drip {
-            0%, 100% { opacity: 0.3; }
-            50% { opacity: 0.7; }
-        }
-
-        /* Floating Crystals */
-        .crystal {
-            position: fixed;
-            width: 20px;
-            height: 20px;
-            pointer-events: none;
-            animation: float 6s ease-in-out infinite;
-        }
-
-        .crystal::before {
-            content: "💎";
-            font-size: 15px;
-            opacity: 0.6;
-        }
-
-        @keyframes float {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-20px); }
-        }
-
-        /* Smoke Effect */
-        .smoke {
-            position: fixed;
-            width: 100%;
-            height: 100%;
-            background: 
-                repeating-radial-gradient(
-                    circle at 50% 50%,
-                    rgba(37, 37, 56, 0.1),
-                    rgba(37, 37, 56, 0.2) 100%
-                );
-            filter: blur(5px);
-            animation: smoke 20s linear infinite;
-            pointer-events: none;
-        }
-
-        @keyframes smoke {
-            0% { transform: translateY(0) rotate(0deg); }
-            100% { transform: translateY(-100px) rotate(360deg); }
-        }
-
-        .chronicle {
-            max-width: 1000px;
-            margin: 0 auto;
-            padding: 20px;
-            position: relative;
-        }
-
-        .page {
-            background: rgba(13, 17, 23, 0.95);
-            padding: 40px;
-            margin: 20px auto;
-            border-left: 3px solid #6a4c9c;
-            font-size: 14px;
-            position: relative;
-            max-width: 800px;
-            box-shadow: 0 0 30px rgba(106, 76, 156, 0.1);
-            backdrop-filter: blur(10px);
-        }
-
-        .page::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: 
-                linear-gradient(45deg, transparent 45%, rgba(106, 76, 156, 0.1) 50%, transparent 55%),
-                linear-gradient(-45deg, transparent 45%, rgba(106, 76, 156, 0.1) 50%, transparent 55%);
-            background-size: 20px 20px;
-            pointer-events: none;
-        }
-
-        /* Mystical Decorations */
-        .rune-circle {
-            position: absolute;
-            width: 100px;
-            height: 100px;
-            border: 2px solid rgba(106, 76, 156, 0.3);
-            border-radius: 50%;
-            animation: rotate 20s linear infinite;
-        }
-
-        .rune-circle::before {
-            content: '⚝ ⚘ ⚝ ⚘';
-            position: absolute;
-            width: 100%;
-            text-align: center;
-            top: 50%;
-            transform: translateY(-50%);
-            color: rgba(106, 76, 156, 0.5);
-        }
-
-        @keyframes rotate {
-            from { transform: rotate(0deg); }
-            to { transform: rotate(360deg); }
-        }
-
-        .notes {
-            color: #6a9c4c;
-            font-style: italic;
-            font-size: 12px;
-            padding: 15px;
-            margin: 20px 0;
-            border: 1px solid rgba(106, 156, 76, 0.2);
-            background: rgba(13, 17, 23, 0.5);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .notes::after {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: 
-                repeating-linear-gradient(
-                    45deg,
-                    transparent,
-                    transparent 10px,
-                    rgba(106, 156, 76, 0.1) 10px,
-                    rgba(106, 156, 76, 0.1) 20px
-                );
-        }
-
-        .observer-note {
-            border-left: 2px solid #4c6a9c;
-            padding: 20px;
-            margin: 40px 0;
-            color: #8ba1c7;
-            position: relative;
-            background: rgba(20, 20, 30, 0.3);
-            transform: perspective(1000px) rotateX(1deg);
-            transition: transform 0.3s ease;
-        }
-
-        .observer-note:hover {
-            transform: perspective(1000px) rotateX(0deg);
-        }
-
-        .field-note {
-            background: rgba(30, 30, 40, 0.6);
-            padding: 20px;
-            margin: 40px 0;
-            border: 1px solid #4c6a9c;
-            position: relative;
-            box-shadow: 0 0 20px rgba(76, 106, 156, 0.1);
-        }
-
-        .gem-sketch {
-            font-family: monospace;
-            white-space: pre;
-            color: #9c4c6a;
-            margin: 40px 0;
-            font-size: 12px;
-            line-height: 12px;
-            text-align: center;
-            position: relative;
-            z-index: 1;
-        }
-
-        .gem-sketch::after {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 200%;
-            height: 200%;
-            background: radial-gradient(circle, rgba(156, 76, 106, 0.1) 0%, transparent 70%);
-            transform: translate(-50%, -50%);
-            z-index: -1;
-            pointer-events: none;
-        }
-
-        /* New Dark Fantasy Elements */
-        .skull-decoration {
-            position: absolute;
-            font-size: 20px;
-            opacity: 0.3;
-            animation: float 4s ease-in-out infinite;
-        }
-
-        .candle {
-            position: fixed;
-            width: 10px;
-            height: 20px;
-            background: #ffd700;
-            border-radius: 5px;
-        }
-
-        .candle::after {
-            content: '';
-            position: absolute;
-            width: 20px;
-            height: 20px;
-            background: radial-gradient(circle, rgba(255, 215, 0, 0.2), transparent 70%);
-            animation: flicker 1s ease-in-out infinite;
-        }
-
-        @keyframes flicker {
-            0%, 100% { opacity: 1; transform: scale(1); }
-            50% { opacity: 0.8; transform: scale(0.95); }
-        }
-
-        /* New ASCII Art Styles */
-        .cave-art {
-            color: #4c6a9c;
-            font-size: 12px;
-            line-height: 1.2;
-            margin: 30px 0;
-            text-align: center;
-            position: relative;
-        }
-
-        .brotherhood-symbol {
-            position: absolute;
-            font-size: 24px;
-            color: rgba(106, 76, 156, 0.5);
-            animation: pulse 2s infinite;
-        }
-
-        @keyframes pulse {
-            0%, 100% { opacity: 0.5; transform: scale(1); }
-            50% { opacity: 1; transform: scale(1.1); }
-        }
-
-        .magic-circle {
-            position: absolute;
-            width: 200px;
-            height: 200px;
-            border: 2px solid rgba(106, 76, 156, 0.2);
-            border-radius: 50%;
-            animation: rotate 30s linear infinite;
-        }
-
-        .magic-circle::before,
-        .magic-circle::after {
-            content: '★ ✧ ★ ✧';
-            position: absolute;
-            width: 100%;
-            text-align: center;
-            color: rgba(106, 76, 156, 0.3);
-        }
-
-        .section {
-            margin: 60px 0;
-            position: relative;
-        }
-
-        /* Interactive Elements */
-        .interactive-crystal {
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .interactive-crystal:hover {
-            transform: scale(1.1);
-            filter: brightness(1.2);
-        }
-
-        /* Scroll Effects */
-        .scroll-reveal {
-            opacity: 0;
-            transform: translateY(20px);
-            transition: all 0.8s ease;
-        }
-
-        .scroll-reveal.visible {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        .brotherhood-art {
-            white-space: pre;
-            font-family: monospace;
-            color: #6a4c9c;
-            text-align: center;
-            margin: 30px 0;
-            position: relative;
-        }
-
-        .brotherhood-art::before,
-        .brotherhood-art::after {
-            content: '◊ ◊ ◊';
-            position: absolute;
-            width: 100%;
-            text-align: center;
-            color: rgba(106, 76, 156, 0.3);
-        }
-
-        .discovery {
-            color: #9c6a4c;
-            font-weight: bold;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            margin-bottom: 15px;
-            position: relative;
-        }
-
-        .side-art {
-            position: absolute;
-            font-family: monospace;
-            white-space: pre;
-            color: #4c6a9c;
-            font-size: 12px;
-            line-height: 1.2;
-            opacity: 0.7;
-        }
-
-        .side-art.left {
-            left: -60px;
-            text-align: right;
-        }
-
-        .side-art.right {
-            right: -60px;
-            text-align: left;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <title>GemRaiders — Whitepaper / Technical Overview (Light Version)</title>
+  <style>
+    /* ============================
+       LIGHT THEME, RESPONSIVE
+       No external dependencies
+       ============================ */
+    :root {
+      --background-color: #fdfdfd;
+      --text-color: #333;
+      --highlight-color: #ff9900;
+      --accent-color: #0077cc;
+      --heading-color: #222;
+      --border-color: #ddd;
+      --section-bg: #ffffff;
+    }
+    body {
+      margin: 0;
+      padding: 0;
+      background: var(--background-color);
+      font-family: Arial, sans-serif;
+      color: var(--text-color);
+    }
+    header, main, footer {
+      width: 90%;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 1rem;
+    }
+    header {
+      text-align: center;
+      border-bottom: 1px solid var(--border-color);
+    }
+    nav ul {
+      list-style: none;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      justify-content: center;
+      padding: 0;
+      margin: 1rem 0;
+    }
+    nav li {
+      cursor: pointer;
+      color: var(--accent-color);
+    }
+    nav li:hover {
+      text-decoration: underline;
+    }
+    h1, h2, h3 {
+      color: var(--heading-color);
+      margin-bottom: 0.5rem;
+    }
+    h1 { margin-top: 0; }
+    p {
+      line-height: 1.5;
+      margin-bottom: 1rem;
+    }
+    .section {
+      margin-bottom: 2rem;
+      padding: 1rem;
+      background: var(--section-bg);
+      border-radius: 4px;
+      box-shadow: 0 0 5px rgba(0,0,0,0.05);
+    }
+    .highlight {
+      color: var(--highlight-color);
+      font-weight: bold;
+    }
+    footer {
+      border-top: 1px solid var(--border-color);
+      text-align: center;
+      color: #666;
+      padding: 2rem 0;
+    }
+    .btn-top {
+      position: fixed;
+      bottom: 1rem;
+      right: 1rem;
+      background: var(--accent-color);
+      color: #fff;
+      border: none;
+      border-radius: 4px;
+      padding: 0.5rem 1rem;
+      cursor: pointer;
+      font-weight: bold;
+    }
+    .btn-top:hover {
+      background: #005da3;
+    }
+    @media (max-width: 768px) {
+      nav ul {
+        flex-direction: column;
+        align-items: center;
+      }
+    }
+  </style>
 </head>
 <body>
-    <!-- Cave Ambience Elements -->
-    <div class="smoke"></div>
-    <div class="spider"></div>
-    <div class="spider" style="animation-delay: -5s;"></div>
-    <div class="spider" style="animation-delay: -10s;"></div>
 
-    <!-- Stalactites -->
-    <div class="stalactite" style="left: 10%; height: 100px;"></div>
-    <div class="stalactite" style="left: 30%; height: 150px;"></div>
-    <div class="stalactite" style="left: 50%; height: 80px;"></div>
-    <div class="stalactite" style="left: 70%; height: 120px;"></div>
-    <div class="stalactite" style="left: 90%; height: 90px;"></div>
+<header>
+  <h1>GemRaiders — Whitepaper & Technical Overview (Alpha, Light)</h1>
+  <nav>
+    <ul>
+      <li onclick="scrollToSection('introduction')">Introduction</li>
+      <li onclick="scrollToSection('bot-tech')">Bot & Tech Details</li>
+      <li onclick="scrollToSection('gameplay')">Gameplay Manual</li>
+      <li onclick="scrollToSection('shards-xp')">Shards & Levels</li>
+      <li onclick="scrollToSection('lore')">Lore</li>
+      <li onclick="scrollToSection('roadmap')">Roadmap Note</li>
+    </ul>
+  </nav>
+</header>
 
-    <!-- Floating Crystals -->
-    <div class="crystal" style="top: 20%; left: 15%;"></div>
-    <div class="crystal" style="top: 40%; left: 85%; animation-delay: -2s;"></div>
-    <div class="crystal" style="top: 70%; left: 25%; animation-delay: -4s;"></div>
+<main>
 
-    <div class="chronicle">
-        <div class="page">
-            <div class="notes">
-                Field Journal: Entry #348<br>
-                Location: Deep within the Brotherhood's Cave<br>
-                Time: When shadows speak...
-            </div>
+  <!-- INTRODUCTION -->
+  <section id="introduction" class="section">
+    <h2>Introduction</h2>
+    <p>
+      <strong>GemRaiders</strong> is an early public Alpha project 
+      found at <span class="highlight">GemRaiders.xyz</span>. 
+      We blend dark-fantasy-inspired lore with a chat-driven dungeon crawler. 
+      This page explains the technical details of our stable release (v3) 
+      and the broader vision for building a blockchain-powered game. 
+      Visit us on Telegram at 
+      <a href="https://t.me/GemRaiders" target="_blank" style="color: var(--accent-color); text-decoration: none;">t.me/GemRaiders</a>.
+    </p>
+  </section>
 
-            <div class="section">
-                <div class="cave-art">
-     /\\___/\\   BROTHERHOOD   /\\___/\\
-    |  ◇◇◇  | OF THE ANCIENT |  ◇◇◇  |
-     \\___/\\     POWERS     \\___/\\
-                </div>
+  <!-- BOT DETAILS -->
+  <section id="bot-tech" class="section">
+    <h2>Bot & Technical Details</h2>
+    <p>
+      Our engine relies on a Telegram bot that handles players’ commands 
+      for forming parties, starting dungeons, tracking experience, 
+      awarding shards, and more. It also:
+    </p>
+    <ul>
+      <li>Keeps a JSON-based record (<code>bot_data.json</code>) of user stats, 
+          active dungeons, scenario scripts, etc.</li>
+      <li>Tracks each player's activity to mitigate spam and potential bot exploitation.</li>
+      <li>Updates user XP not only from combat but from chatting (within limits) 
+          and from completing scenarios or referrals.</li>
+      <li>Offers staminas (cooldowns) so players cannot spam multiple dungeons 
+          continuously without limit.</li>
+      <li>Maintains a flexible scene system: <em>text</em> scenes, <em>combat</em> scenes, 
+          <em>boss</em> scenes, etc. tied to scenario JSON files 
+          (e.g., <code>dungeon1.json</code>, <code>dungeon2.json</code>).</li>
+    </ul>
+    <p>
+      At this Alpha stage, we rely on a single “master” Python script 
+      (the “stable 3” version) with minimal external libraries. 
+      It organizes the entire dungeon logic (like <code>/engage</code>, <code>/begin_dungeon</code>, 
+      <code>/next</code>), enabling turn-based combat plus text-based scene progression.
+    </p>
+    <p>
+      We have anti-bot measures behind the scenes to detect suspicious spam or 
+      artificially inflated referral stats. While we won’t disclose the exact method, 
+      rest assured that an attempt to farm shards or XP automatically 
+      is unlikely to succeed long-term.
+    </p>
+  </section>
 
-                <div class="gem-sketch">
-   .--------------.
-  /   BROTHERHOOD  \
- /    .-''''-.     \
-|    /        \    |
-|    \        /    |
- \    '-....-'    /
-  \              /
-   '-----------'
-[new alliances form]
-                </div>
+  <!-- GAMEPLAY MANUAL -->
+  <section id="gameplay" class="section">
+    <h2>Gameplay Manual (All Commands)</h2>
+    <p>
+      Here’s a step-by-step guide to playing GemRaiders in detail. 
+      Note that <strong>one person in your party must decide which scenario</strong> to use 
+      (so discuss in chat who is picking).
+    </p>
+    <h3>1) Enter the Lobby</h3>
+    <p>
+      Use <code>/dungeon_lobby</code> to join the global lobby. 
+      You’ll see a list of who else is waiting. 
+      Up to 5 players can form one group.
+    </p>
+    <h3>2) Choose the Scenario</h3>
+    <p>
+      Any single party member picks the scenario with <code>/begin_dungeon &lt;num&gt;</code> 
+      after reviewing <code>/list_dungeons</code>. For instance:
+    </p>
+    <pre><code>/list_dungeons
+/begin_dungeon 2</code></pre>
+    <p>
+      The bot will form a new dungeon with its own internal ID 
+      (e.g. “Formed a party (ID=1).”). Everyone in the lobby is allocated 
+      to that new party.
+    </p>
+    <h3>3) Classes & Starting the Dungeon</h3>
+    <p>
+      Each player sets their class: <code>/set_class Warrior</code> (or Mage, Ranger, Healer). 
+      Then any party member can do <code>/start_dungeon &lt;ID&gt;</code>, 
+      e.g. <code>/start_dungeon 1</code> if the bot said ID=1. 
+      You’ll see the first scene appear.
+    </p>
+    <h3>4) Text Scenes</h3>
+    <p>
+      Whenever a scene is <strong>type: text</strong>, 
+      you can type <code>/next</code> to move forward. 
+      Some text scenes also mention special events 
+      (like “everyone recovers 10 HP”).
+    </p>
+    <h3>5) Combat Scenes</h3>
+    <p>
+      For <strong>type: combat</strong> or <strong>type: boss</strong>, 
+      the bot will say “Enemies appear!” and ask you to <code>/engage &lt;ID&gt;</code>. 
+      Then the fight is turn-based:
+    </p>
+    <ul>
+      <li><code>/dattack &lt;index|boss&gt;</code> 
+          (Deal damage. Warriors do 10, Mages 12, Healers 8, etc.)</li>
+      <li><code>/dskill heal</code> (Healer only), adding +5 HP to self.</li>
+      <li>Inline attack buttons also appear each turn.</li>
+    </ul>
+    <p>
+      Once all mobs or the boss are defeated, you can 
+      <code>/next</code> to proceed. If you die, the run is lost.
+    </p>
 
-                <div class="observer-note">
-                    The cave has become a beacon for those who seek ancient knowledge. Each day brings new masters, new powers, new mysteries. The Brotherhood grows stronger...
-                </div>
-            </div>
+    <h3>Full Command List Overview</h3>
+    <ul>
+      <li><code>/help</code> — See all commands</li>
+      <li><code>/start</code> — Start or handle referral</li>
+      <li><code>/mystats</code> — Show personal stats</li>
+      <li><code>/stats &lt;page&gt;</code> — Leaderboard</li>
+      <li><code>/myinvite</code> — Personal referral link</li>
+      <li><code>/travelreport &lt;text&gt;</code> — Submit story</li>
+      <li><code>/approve_report &lt;id&gt; &lt;shards&gt;</code> — Admin only</li>
+      <li><code>/list_dungeons</code> — See scenario files</li>
+      <li><code>/dungeon_lobby</code> — Join the global lobby</li>
+      <li><code>/begin_dungeon &lt;num&gt;</code> — Form a party from the lobby</li>
+      <li><code>/set_class &lt;class&gt;</code> — Warrior, Mage, Ranger, Healer</li>
+      <li><code>/start_dungeon &lt;ID&gt;</code> — Enter scenario</li>
+      <li><code>/next</code> — Proceed if scene is text-based</li>
+      <li><code>/engage &lt;ID&gt;</code> — Start combat if it’s a combat scene</li>
+      <li><code>/dattack &lt;index|boss&gt;</code> — Attack</li>
+      <li><code>/dskill &lt;skill&gt;</code> — Use class skill</li>
+    </ul>
+  </section>
 
-            <div class="section">
-                <div class="brotherhood-art">
-    *・゜゜・*:.。..。.:*・'(*゜▽゜*)'・*:.。. .。.:*・゜゜・*
-           MASTERS OF THE ARCANE ARTS
-    *・゜゜・*:.。..。.:*・'(*゜▽゜*)'・*:.。. .。.:*・゜゜・*
-                </div>
+  <!-- SHARDS & XP -->
+  <section id="shards-xp" class="section">
+    <h2>Shards, Levels, Referral System</h2>
+    <h3>Shards</h3>
+    <p>
+      <strong>Shards</strong> are an in-game currency you earn by:
+    </p>
+    <ul>
+      <li>Completing dungeons successfully</li>
+      <li>Referral rewards (when your invitees become active)</li>
+      <li>Other in-game activities (story submissions, special events, etc.)</li>
+    </ul>
+    <p>
+      Soon, <strong>100 Shards = 1 Gem</strong>. 
+      We plan to implement a specialized bot that lets you trade Shards for Gems. 
+      Gems may gain further utility (e.g., advanced content, unique items). 
+      This feature remains in development but should arrive in future updates.
+    </p>
 
-                <div class="field-note">
-                    <span class="discovery">Guild Masters Assembled:</span>
-                    → Runebinder from the Ancient Libraries<br>
-                    → Geomancer of the Crystal Peaks<br>
-                    → Void Whisperer from the Eternal Dark<br>
-                    → Dreamweaver of the Twilight Realms<br>
-                    → Stormcaller of the Thunder Plains<br>
-                    → Blood Sage of the Crimson Courts
-                </div>
+    <h3>Levels & XP</h3>
+    <p>
+      Players have an <em>experience (XP)</em> tally. 
+      You level up automatically when hitting certain XP thresholds. 
+      You gain XP from:
+    </p>
+    <ul>
+      <li>Posting messages in chat (up to a certain limit to prevent spam exploitation)</li>
+      <li>Finishing dungeons and defeating mobs or bosses</li>
+      <li>Referrals becoming active</li>
+    </ul>
+    <p>
+      Each level requires progressively more XP. 
+      Higher levels may unlock future perks or expansions (announced later).
+    </p>
 
-                <div class="observer-note">
-                    Each master brings their own magic, their own secrets. The cave walls pulse with combined energies I've never witnessed before. The preparations are clear - they are gathering strength for something momentous.
-                </div>
-            </div>
+    <h3>Referrals</h3>
+    <p>
+      Each user has a personal invite link (<code>/myinvite</code>). 
+      When a new player starts via that link, 
+      you become their inviter. If they become <strong>active</strong> 
+      (surpassing a certain message threshold, etc.), 
+      you earn a Shard bonus. Inactive invitees do not yield bonus. 
+      The system tracks each user’s referrals, 
+      awarding Shards once they are deemed legitimate participants. 
+      Attempts to mass-invite bots or alt accounts 
+      are likely to be detected by our anti-bot mechanisms.
+    </p>
 
-            <div class="section">
-                <div class="cave-art">
-                   /\\       /\\
-                  /  \\     /  \\
-    {[<<>>]} ---<    >>---<<    >--- {[<<>>]}
-                  \\  /     \\  /
-                   \\/       \\/
-                [THE ANCIENT DRAGON AWAITS]
-                </div>
+    <h3>Stamina & Cooldowns</h3>
+    <p>
+      Each user has a <strong>stamina</strong> (attempt) limit for dungeons. 
+      Typically <code>DAILY_DUNGEON_ATTEMPTS=1</code> 
+      in our current alpha. After each successful or failed run, 
+      your stamina decreases. We aim to maintain fairness 
+      and pace, ensuring one cannot spam runs infinitely in a short time.
+    </p>
 
-                <div class="field-note" style="border-color: #9c4c6a;">
-                    <span class="discovery">Overheard Plans - ENCRYPTED</span>
-                    → Discussions of the Northern Dragon's domain<br>
-                    → Maps being drawn of mountain passages<br>
-                    → Ancient texts about dragon-binding studied<br>
-                    → Ritual preparations underway<br>
-                    → Brotherhood grows stronger by the day
-                </div>
-            </div>
+    <h3>Anti-Bot Protections</h3>
+    <p>
+      Our system monitors suspicious repeated patterns, 
+      flood attempts, or unnatural referral behavior. 
+      We do not disclose exact details to prevent circumvention, 
+      but rest assured: spamming or automated scripts 
+      are unlikely to gain Shards or XP effectively. 
+      We reserve the right to revoke illegitimate gains 
+      and block malicious accounts if detected.
+    </p>
+  </section>
 
-            <div class="section">
-                <div class="brotherhood-art">
-           /\\/\\ UNITED IN PURPOSE /\\/\\
-          |  ++  BOUND BY POWER  ++  |
-           \\/\\/ MARKED BY FATE \\/\\/
-                </div>
+  <!-- LORE -->
+  <section id="lore" class="section">
+    <h2>Lore: Gem Finder, Shade & Eternal Observer</h2>
+    <p>
+      The GemRaiders universe follows the sagas of:
+    </p>
+    <ul>
+      <li><strong>Gem Finder</strong> — A legendary traveler wearing a mantle studded with luminous gems, 
+          rumored to bridge hidden realities in pursuit of rare stones.</li>
+      <li><strong>Shade</strong> — A tacit companion veiled in shadow, 
+          guiding the Finder and any parties through labyrinthine passages, 
+          safeguarding them from fatal traps and monstrous foes.</li>
+      <li><strong>Eternal Observer</strong> — Our developer’s persona, 
+          maintaining a blog (in character) about the expansions, 
+          updates, and behind-the-scenes glimpses into the code and lore connections. 
+          This entity also acts as an archivist of daily logs and patch notes.</li>
+    </ul>
+    <p>
+      Our core environment is a dark-fantasy meets cryptic technology. 
+      Over time, we plan for deeper expansions connecting <em>GemRaiders.xyz</em> 
+      with <em>day1.gemraiders.xyz</em>, forging a cohesive multi-layered narrative 
+      of magic, relics, and beyond.
+    </p>
+  </section>
 
-                <div class="observer-note">
-                    I've learned their intent - the Brotherhood plans to seek the Ancient Dragon together. Not as conquerors, but as equals seeking ancient knowledge. The power of their combined arts might just be enough to earn its respect.
-                </div>
+  <!-- ROADMAP NOTE -->
+  <section id="roadmap" class="section">
+    <h2>Roadmap is Coming</h2>
+    <p>
+      We have a roadmap in progress, detailing expansions, 
+      advanced features, and a potential token economy for Shards/Gems. 
+      For now, we will keep it undisclosed until the official reveal. 
+      Stay tuned for further announcements on 
+      <a href="https://t.me/GemRaiders" target="_blank" style="color: var(--accent-color); text-decoration: none;">t.me/GemRaiders</a>.
+    </p>
+  </section>
 
-                <div class="gem-sketch">
-    /\\=====//\\=====//\\
-      DESTINY BECKONS
-    \\//=====\\//=====\\
-                </div>
-            </div>
+</main>
 
-            <div class="section">
-                <div class="field-note">
-                    <span class="discovery">Ritual Observations:</span>
-                    → Gem Seeker's crystals align in new patterns<br>
-                    → Combined magics create unprecedented effects<br>
-                    → Ancient symbols appear in the air<br>
-                    → The cave itself seems to breathe with power<br>
-                    → Each master adds their signature to the whole
-                </div>
+<footer>
+  <p>© 2025 GemRaiders. Alpha “Stable 3” Release. All rights reserved.</p>
+</footer>
 
-                <div class="observer-note">
-                    The brotherhood grows stronger each day. Soon they will be ready to face the dragon - not with weapons or violence, but with wisdom and unified purpose. Even from my hidden vantage point, I can feel the power building...
-                </div>
-            </div>
+<button class="btn-top" onclick="scrollToTop()">↑ Top</button>
 
-            <div class="notes" style="text-align: right;">
-                ...when they move, I must follow
-            </div>
-        </div>
-    </div>
+<script>
+  function scrollToSection(id){
+    const el = document.getElementById(id);
+    if(el){
+      el.scrollIntoView({behavior:"smooth"});
+    }
+  }
+  function scrollToTop(){
+    window.scrollTo({top:0, behavior:"smooth"});
+  }
+</script>
 
-    <!-- Hidden Spoiler Button -->
-    <button class="hidden-spoiler" title="Ancient Secret"></button>
-
-    <!-- Easter Egg Modal -->
-    <div class="easter-egg-modal">
-        <button class="easter-egg-close">×</button>
-        <div class="easter-egg-content">
-            <div class="gem-sketch">
-   .---------.
-  /  SECRET   \
- /  OF THE     \
-|   BROTHERHOOD  |
- \    CAVE     /
-  \           /
-   '---------'
-            </div>
-            <div class="secret-message">
-                ╔════════════════════════════╗
-                ║    HIDDEN TREASURE         ║
-                ╚════════════════════════════╝
-
-                Hail, brave seeker!
-                You've found what remains hidden from many eyes.
-                
-                The ancient scrolls speak:
-                "Only the most attentive ones can perceive
-                the secret signs in the Brotherhood's Cave.
-                To the first who sees, a reward shall be granted
-                from the Brotherhood's treasury."
-
-                To claim your reward:
-                1. Take a screenshot of this message
-                2. Post it on Twitter with @EternalGemFindr tag
-                3. First finder receives 30$ reward
-                
-                Remember: true treasures often lie
-                hidden from prying eyes, 
-                but you've proven your keen sight!
-                
-                P.S. Guard this secret wisely...
-            </div>
-        </div>
-    </div>
-
-    <script>
-        // Easter Egg Modal Functionality
-        const spoilerBtn = document.querySelector('.hidden-spoiler');
-        const modal = document.querySelector('.easter-egg-modal');
-        const closeBtn = document.querySelector('.easter-egg-close');
-
-        spoilerBtn.addEventListener('click', () => {
-            modal.classList.add('active');
-        });
-
-        closeBtn.addEventListener('click', () => {
-            modal.classList.remove('active');
-        });
-
-        // Close modal on clicking outside
-        window.addEventListener('click', (e) => {
-            if (e.target === modal) {
-                modal.classList.remove('active');
-            }
-        });
-        // Add dynamic spider spawning
-        setInterval(() => {
-            const spider = document.createElement('div');
-            spider.className = 'spider';
-            spider.style.left = Math.random() * window.innerWidth + 'px';
-            document.body.appendChild(spider);
-            
-            // Remove spider after animation
-            setTimeout(() => {
-                spider.remove();
-            }, 20000);
-        }, 5000);
-
-        // Add scroll reveal effect
-        const observerOptions = {
-            threshold: 0.1
-        };
-
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('visible');
-                }
-            });
-        }, observerOptions);
-
-        document.querySelectorAll('.section').forEach(section => {
-            section.classList.add('scroll-reveal');
-            observer.observe(section);
-        });
-    </script>
 </body>
 </html>
