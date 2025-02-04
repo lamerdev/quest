@@ -1,775 +1,363 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
 <head>
-    <meta charset="UTF-8">
-    <title>Chronicles of the Brotherhood's Cave</title>
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
-        
-        /* Hidden Spoiler Button */
-        .hidden-spoiler {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            width: 30px;
-            height: 30px;
-            background: transparent;
-            border: none;
-            cursor: pointer;
-            opacity: 0.1;
-            transition: all 0.3s ease;
-            transform: scale(1);
-            text-shadow: 0 0 5px #6a4c9c;
-            z-index: 1000;
-        }
-
-        .hidden-spoiler:hover {
-            opacity: 0.6;
-            transform: scale(1.2);
-            text-shadow: 0 0 15px #6a4c9c;
-        }
-
-        .hidden-spoiler::before {
-            content: "◈";
-            font-size: 20px;
-            color: #6a4c9c;
-        }
-
-        /* Easter Egg Modal */
-        .easter-egg-modal {
-            display: none;
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            background: rgba(10, 10, 18, 0.98);
-            padding: 40px;
-            border: 2px solid #6a4c9c;
-            box-shadow: 0 0 30px rgba(106, 76, 156, 0.5);
-            z-index: 1001;
-            max-width: 600px;
-            animation: modalAppear 0.5s ease-out;
-            border-radius: 10px;
-        }
-
-        .modal-gems {
-            position: absolute;
-            font-size: 24px;
-            color: #9c4c6a;
-            animation: sparkle 2s infinite;
-        }
-
-        .modal-gems.top-left { top: 10px; left: 10px; }
-        .modal-gems.top-right { top: 10px; right: 10px; }
-        .modal-gems.bottom-left { bottom: 10px; left: 10px; }
-        .modal-gems.bottom-right { bottom: 10px; right: 10px; }
-
-        @keyframes sparkle {
-            0%, 100% { opacity: 0.3; transform: scale(1); }
-            50% { opacity: 1; transform: scale(1.2); }
-        }
-
-        .close-button {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            width: 30px;
-            height: 30px;
-            border: none;
-            background: none;
-            color: #6a4c9c;
-            font-size: 24px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 50%;
-        }
-
-        .close-button:hover {
-            color: #9c4c6a;
-            transform: rotate(90deg);
-            background: rgba(106, 76, 156, 0.1);
-        }
-
-        .celebration-gems {
-            text-align: center;
-            margin: 15px 0;
-            font-size: 20px;
-            color: #6a4c9c;
-            animation: floatGems 3s infinite ease-in-out;
-        }
-
-        @keyframes floatGems {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-10px); }
-        }
-
-        .magic-border {
-            position: absolute;
-            top: -5px;
-            left: -5px;
-            right: -5px;
-            bottom: -5px;
-            border: 2px solid #6a4c9c;
-            border-radius: 12px;
-            animation: borderGlow 4s infinite linear;
-            pointer-events: none;
-        }
-
-        @keyframes borderGlow {
-            0%, 100% { border-color: #6a4c9c; }
-            50% { border-color: #9c4c6a; }
-        }
-
-        .easter-egg-modal.active {
-            display: block;
-        }
-
-        @keyframes modalAppear {
-            from {
-                opacity: 0;
-                transform: translate(-50%, -50%) scale(0.9);
-            }
-            to {
-                opacity: 1;
-                transform: translate(-50%, -50%) scale(1);
-            }
-        }
-
-        .easter-egg-content {
-            color: #c5d1eb;
-            font-family: monospace;
-            text-align: center;
-            position: relative;
-        }
-
-        .easter-egg-close {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            background: none;
-            border: none;
-            color: #6a4c9c;
-            cursor: pointer;
-            font-size: 20px;
-            opacity: 0.7;
-            transition: opacity 0.3s ease;
-        }
-
-        .easter-egg-close:hover {
-            opacity: 1;
-        }
-
-        .secret-message {
-            white-space: pre-line;
-            margin: 20px 0;
-            padding: 20px;
-            border: 1px solid rgba(106, 76, 156, 0.3);
-            background: rgba(10, 10, 18, 0.5);
-        }
-        
-        body {
-            background-color: #0a0a12;
-            background-image: 
-                radial-gradient(circle at 20% 20%, #1a1a2a 0%, transparent 50%),
-                radial-gradient(circle at 80% 80%, #1a1a2a 0%, transparent 50%);
-            color: #c5d1eb;
-            margin: 0;
-            padding: 20px;
-            font-family: monospace;
-            line-height: 1.6;
-            min-height: 100vh;
-            cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 20 20'%3E%3Ccircle cx='10' cy='10' r='8' fill='none' stroke='%236a4c9c' stroke-width='2'/%3E%3C/svg%3E"), auto;
-        }
-
-        /* Spider Animation */
-        .spider {
-            position: fixed;
-            width: 20px;
-            height: 20px;
-            pointer-events: none;
-            z-index: 1000;
-            animation: moveSpider 20s linear infinite;
-        }
-
-        .spider::before {
-            content: "🕷️";
-            font-size: 20px;
-        }
-
-        @keyframes moveSpider {
-            0% { transform: translate(0, -100%); }
-            25% { transform: translate(100vw, 0); }
-            50% { transform: translate(0, 100vh); }
-            75% { transform: translate(-100vw, 0); }
-            100% { transform: translate(0, -100%); }
-        }
-
-        /* Cave Ambience */
-        .stalactite {
-            position: fixed;
-            width: 2px;
-            background: linear-gradient(to bottom, #4c6a9c, transparent);
-            top: 0;
-            animation: drip 3s infinite;
-        }
-
-        @keyframes drip {
-            0%, 100% { opacity: 0.3; }
-            50% { opacity: 0.7; }
-        }
-
-        /* Floating Crystals */
-        .crystal {
-            position: fixed;
-            width: 20px;
-            height: 20px;
-            pointer-events: none;
-            animation: float 6s ease-in-out infinite;
-        }
-
-        .crystal::before {
-            content: "💎";
-            font-size: 15px;
-            opacity: 0.6;
-        }
-
-        @keyframes float {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-20px); }
-        }
-
-        /* Smoke Effect */
-        .smoke {
-            position: fixed;
-            width: 100%;
-            height: 100%;
-            background: 
-                repeating-radial-gradient(
-                    circle at 50% 50%,
-                    rgba(37, 37, 56, 0.1),
-                    rgba(37, 37, 56, 0.2) 100%
-                );
-            filter: blur(5px);
-            animation: smoke 20s linear infinite;
-            pointer-events: none;
-        }
-
-        @keyframes smoke {
-            0% { transform: translateY(0) rotate(0deg); }
-            100% { transform: translateY(-100px) rotate(360deg); }
-        }
-
-        .chronicle {
-            max-width: 1000px;
-            margin: 0 auto;
-            padding: 20px;
-            position: relative;
-        }
-
-        .page {
-            background: rgba(13, 17, 23, 0.95);
-            padding: 40px;
-            margin: 20px auto;
-            border-left: 3px solid #6a4c9c;
-            font-size: 14px;
-            position: relative;
-            max-width: 800px;
-            box-shadow: 0 0 30px rgba(106, 76, 156, 0.1);
-            backdrop-filter: blur(10px);
-        }
-
-        .page::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: 
-                linear-gradient(45deg, transparent 45%, rgba(106, 76, 156, 0.1) 50%, transparent 55%),
-                linear-gradient(-45deg, transparent 45%, rgba(106, 76, 156, 0.1) 50%, transparent 55%);
-            background-size: 20px 20px;
-            pointer-events: none;
-        }
-
-        /* Mystical Decorations */
-        .rune-circle {
-            position: absolute;
-            width: 100px;
-            height: 100px;
-            border: 2px solid rgba(106, 76, 156, 0.3);
-            border-radius: 50%;
-            animation: rotate 20s linear infinite;
-        }
-
-        .rune-circle::before {
-            content: '⚝ ⚘ ⚝ ⚘';
-            position: absolute;
-            width: 100%;
-            text-align: center;
-            top: 50%;
-            transform: translateY(-50%);
-            color: rgba(106, 76, 156, 0.5);
-        }
-
-        @keyframes rotate {
-            from { transform: rotate(0deg); }
-            to { transform: rotate(360deg); }
-        }
-
-        .notes {
-            color: #6a9c4c;
-            font-style: italic;
-            font-size: 12px;
-            padding: 15px;
-            margin: 20px 0;
-            border: 1px solid rgba(106, 156, 76, 0.2);
-            background: rgba(13, 17, 23, 0.5);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .notes::after {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: 
-                repeating-linear-gradient(
-                    45deg,
-                    transparent,
-                    transparent 10px,
-                    rgba(106, 156, 76, 0.1) 10px,
-                    rgba(106, 156, 76, 0.1) 20px
-                );
-        }
-
-        .observer-note {
-            border-left: 2px solid #4c6a9c;
-            padding: 20px;
-            margin: 40px 0;
-            color: #8ba1c7;
-            position: relative;
-            background: rgba(20, 20, 30, 0.3);
-            transform: perspective(1000px) rotateX(1deg);
-            transition: transform 0.3s ease;
-        }
-
-        .observer-note:hover {
-            transform: perspective(1000px) rotateX(0deg);
-        }
-
-        .field-note {
-            background: rgba(30, 30, 40, 0.6);
-            padding: 20px;
-            margin: 40px 0;
-            border: 1px solid #4c6a9c;
-            position: relative;
-            box-shadow: 0 0 20px rgba(76, 106, 156, 0.1);
-        }
-
-        .gem-sketch {
-            font-family: monospace;
-            white-space: pre;
-            color: #9c4c6a;
-            margin: 40px 0;
-            font-size: 12px;
-            line-height: 12px;
-            text-align: center;
-            position: relative;
-            z-index: 1;
-        }
-
-        .gem-sketch::after {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 200%;
-            height: 200%;
-            background: radial-gradient(circle, rgba(156, 76, 106, 0.1) 0%, transparent 70%);
-            transform: translate(-50%, -50%);
-            z-index: -1;
-            pointer-events: none;
-        }
-
-        /* New Dark Fantasy Elements */
-        .skull-decoration {
-            position: absolute;
-            font-size: 20px;
-            opacity: 0.3;
-            animation: float 4s ease-in-out infinite;
-        }
-
-        .candle {
-            position: fixed;
-            width: 10px;
-            height: 20px;
-            background: #ffd700;
-            border-radius: 5px;
-        }
-
-        .candle::after {
-            content: '';
-            position: absolute;
-            width: 20px;
-            height: 20px;
-            background: radial-gradient(circle, rgba(255, 215, 0, 0.2), transparent 70%);
-            animation: flicker 1s ease-in-out infinite;
-        }
-
-        @keyframes flicker {
-            0%, 100% { opacity: 1; transform: scale(1); }
-            50% { opacity: 0.8; transform: scale(0.95); }
-        }
-
-        /* New ASCII Art Styles */
-        .cave-art {
-            color: #4c6a9c;
-            font-size: 12px;
-            line-height: 1.2;
-            margin: 30px 0;
-            text-align: center;
-            position: relative;
-        }
-
-        .brotherhood-symbol {
-            position: absolute;
-            font-size: 24px;
-            color: rgba(106, 76, 156, 0.5);
-            animation: pulse 2s infinite;
-        }
-
-        @keyframes pulse {
-            0%, 100% { opacity: 0.5; transform: scale(1); }
-            50% { opacity: 1; transform: scale(1.1); }
-        }
-
-        .magic-circle {
-            position: absolute;
-            width: 200px;
-            height: 200px;
-            border: 2px solid rgba(106, 76, 156, 0.2);
-            border-radius: 50%;
-            animation: rotate 30s linear infinite;
-        }
-
-        .magic-circle::before,
-        .magic-circle::after {
-            content: '★ ✧ ★ ✧';
-            position: absolute;
-            width: 100%;
-            text-align: center;
-            color: rgba(106, 76, 156, 0.3);
-        }
-
-        .section {
-            margin: 60px 0;
-            position: relative;
-        }
-
-        /* Interactive Elements */
-        .interactive-crystal {
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .interactive-crystal:hover {
-            transform: scale(1.1);
-            filter: brightness(1.2);
-        }
-
-        /* Scroll Effects */
-        .scroll-reveal {
-            opacity: 0;
-            transform: translateY(20px);
-            transition: all 0.8s ease;
-        }
-
-        .scroll-reveal.visible {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        .brotherhood-art {
-            white-space: pre;
-            font-family: monospace;
-            color: #6a4c9c;
-            text-align: center;
-            margin: 30px 0;
-            position: relative;
-        }
-
-        .brotherhood-art::before,
-        .brotherhood-art::after {
-            content: '◊ ◊ ◊';
-            position: absolute;
-            width: 100%;
-            text-align: center;
-            color: rgba(106, 76, 156, 0.3);
-        }
-
-        .discovery {
-            color: #9c6a4c;
-            font-weight: bold;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            margin-bottom: 15px;
-            position: relative;
-        }
-
-        .side-art {
-            position: absolute;
-            font-family: monospace;
-            white-space: pre;
-            color: #4c6a9c;
-            font-size: 12px;
-            line-height: 1.2;
-            opacity: 0.7;
-        }
-
-        .side-art.left {
-            left: -60px;
-            text-align: right;
-        }
-
-        .side-art.right {
-            right: -60px;
-            text-align: left;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <title>GemRaiders - Landing Page</title>
+  <!-- Bootstrap CSS (CDN) -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+  
+  <style>
+    /* ============== Gaya Kustom Tambahan ============== */
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #1f1f1f;
+      color: #f8f9fa;
+      margin: 0;
+      padding: 0;
+    }
+    .navbar-brand {
+      font-weight: bold;
+    }
+    /* ============== Bagian Hero ============== */
+    .hero {
+      padding: 100px 0;
+      background: url('https://via.placeholder.com/1920x1080?text=GemRaiders+Background') no-repeat center center / cover;
+      text-align: center;
+      color: #fff;
+      position: relative;
+    }
+    .hero-overlay {
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background-color: rgba(0, 0, 0, 0.5);
+    }
+    .hero-content {
+      position: relative;
+      z-index: 2;
+    }
+    .hero h1 {
+      font-size: 3rem;
+      font-weight: bold;
+    }
+    .hero p {
+      font-size: 1.2rem;
+      margin-bottom: 30px;
+    }
+    .btn-hero {
+      font-size: 1.2rem;
+      padding: 10px 30px;
+      border-radius: 30px;
+      margin-top: 20px;
+    }
+    /* ============== Bagian Tentang ============== */
+    .section-tentang {
+      background-color: #2c2c2c;
+      padding: 60px 0;
+    }
+    /* ============== Bagian Fitur ============== */
+    .section-fitur {
+      background-color: #2c2c2c;
+      padding: 60px 0;
+      text-align: center;
+    }
+    .fitur-box {
+      border: 1px solid #444;
+      border-radius: 8px;
+      padding: 30px;
+      background-color: #383838;
+      margin-bottom: 20px;
+      height: 100%;
+    }
+    /* ============== Bagian Gameplay ============== */
+    .section-gameplay {
+      background-color: #1f1f1f;
+      padding: 60px 0;
+    }
+    /* ============== Bagian Footer ============== */
+    .footer {
+      background-color: #111;
+      padding: 20px 0;
+      text-align: center;
+    }
+    .footer p {
+      margin: 0;
+      font-size: 0.9rem;
+      color: #aaa;
+    }
+  </style>
 </head>
 <body>
-    <!-- Cave Ambience Elements -->
-    <div class="smoke"></div>
-    <div class="spider"></div>
-    <div class="spider" style="animation-delay: -5s;"></div>
-    <div class="spider" style="animation-delay: -10s;"></div>
 
-    <!-- Stalactites -->
-    <div class="stalactite" style="left: 10%; height: 100px;"></div>
-    <div class="stalactite" style="left: 30%; height: 150px;"></div>
-    <div class="stalactite" style="left: 50%; height: 80px;"></div>
-    <div class="stalactite" style="left: 70%; height: 120px;"></div>
-    <div class="stalactite" style="left: 90%; height: 90px;"></div>
+<!-- ============== Navbar ============== -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+  <div class="container">
+    <a class="navbar-brand" href="#">GemRaiders</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+      
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav ms-auto">
+        <li class="nav-item"><a class="nav-link" href="#tentang">Tentang</a></li>
+        <li class="nav-item"><a class="nav-link" href="#fitur">Fitur</a></li>
+        <li class="nav-item"><a class="nav-link" href="#panduan">Panduan</a></li>
+        <li class="nav-item"><a class="nav-link" href="#telegram">Hubungi</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
 
-    <!-- Floating Crystals -->
-    <div class="crystal" style="top: 20%; left: 15%;"></div>
-    <div class="crystal" style="top: 40%; left: 85%; animation-delay: -2s;"></div>
-    <div class="crystal" style="top: 70%; left: 25%; animation-delay: -4s;"></div>
+<!-- ============== Hero Section ============== -->
+<section class="hero">
+  <div class="hero-overlay"></div>
+  <div class="container hero-content">
+    <h1>Selamat Datang di GemRaiders</h1>
+    <p class="lead">Rasakan petualangan dungeon crawler bertema dark-fantasy berbasis obrolan (chat-driven)!</p>
+    <a href="#tentang" class="btn btn-primary btn-hero">Pelajari Lebih Lanjut</a>
+  </div>
+</section>
 
-    <div class="chronicle">
-        <div class="page">
-            <div class="notes">
-                Field Journal: Entry #348<br>
-                Location: Deep within the Brotherhood's Cave<br>
-                Time: When shadows speak...
-            </div>
+<!-- ============== Tentang GemRaiders ============== -->
+<section id="tentang" class="section-tentang">
+  <div class="container">
+    <div class="row text-center mb-5">
+      <div class="col">
+        <h2>Tentang GemRaiders</h2>
+        <p class="lead">
+          GemRaiders adalah proyek publik Alpha yang menggabungkan <strong>dark-fantasy lore</strong> dengan
+          <strong>chat-driven gameplay</strong>. Anda dapat membentuk party bersama pemain lain, menjelajahi dungeon,
+          dan melawan musuh lewat perintah bot Telegram.
+        </p>
+      </div>
+    </div>
+    <div class="row justify-content-center text-light">
+      <div class="col-md-8">
+        <p>
+          Game ini menekankan interaksi sosial, kerja sama tim, dan eksplorasi skenario yang ditulis dalam file JSON.
+          Anda bisa menyesuaikan <em>class</em> (Warrior, Mage, Ranger, atau Healer), lalu mengalahkan musuh
+          untuk mendapatkan XP, Shards, dan <em>level up</em>.
+        </p>
+        <p>
+          Kami saat ini berada pada versi <strong>Alpha</strong>, sehingga fitur masih terbatas namun terus dikembangkan.
+          Bergabunglah dan jadilah bagian dari komunitas yang membangun GemRaiders sejak awal!
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
 
-            <div class="section">
-                <div class="cave-art">
-     /\\___/\\   BROTHERHOOD   /\\___/\\
-    |  ◇◇◇  | OF THE ANCIENT |  ◇◇◇  |
-     \\___/\\     POWERS     \\___/\\
-                </div>
-
-                <div class="gem-sketch">
-   .--------------.
-  /   BROTHERHOOD  \
- /    .-''''-.     \
-|    /        \    |
-|    \        /    |
- \    '-....-'    /
-  \              /
-   '-----------'
-[new alliances form]
-                </div>
-
-                <div class="observer-note">
-                    The cave has become a beacon for those who seek ancient knowledge. Each day brings new masters, new powers, new mysteries. The Brotherhood grows stronger...
-                </div>
-            </div>
-
-            <div class="section">
-                <div class="brotherhood-art">
-    *・゜゜・*:.。..。.:*・'(*゜▽゜*)'・*:.。. .。.:*・゜゜・*
-           MASTERS OF THE ARCANE ARTS
-    *・゜゜・*:.。..。.:*・'(*゜▽゜*)'・*:.。. .。.:*・゜゜・*
-                </div>
-
-                <div class="field-note">
-                    <span class="discovery">Guild Masters Assembled:</span>
-                    → Runebinder from the Ancient Libraries<br>
-                    → Geomancer of the Crystal Peaks<br>
-                    → Void Whisperer from the Eternal Dark<br>
-                    → Dreamweaver of the Twilight Realms<br>
-                    → Stormcaller of the Thunder Plains<br>
-                    → Blood Sage of the Crimson Courts
-                </div>
-
-                <div class="observer-note">
-                    Each master brings their own magic, their own secrets. The cave walls pulse with combined energies I've never witnessed before. The preparations are clear - they are gathering strength for something momentous.
-                </div>
-            </div>
-
-            <div class="section">
-                <div class="cave-art">
-                   /\\       /\\
-                  /  \\     /  \\
-    {[<<>>]} ---<    >>---<<    >--- {[<<>>]}
-                  \\  /     \\  /
-                   \\/       \\/
-                [THE ANCIENT DRAGON AWAITS]
-                </div>
-
-                <div class="field-note" style="border-color: #9c4c6a;">
-                    <span class="discovery">Overheard Plans - ENCRYPTED</span>
-                    → Discussions of the Northern Dragon's domain<br>
-                    → Maps being drawn of mountain passages<br>
-                    → Ancient texts about dragon-binding studied<br>
-                    → Ritual preparations underway<br>
-                    → Brotherhood grows stronger by the day
-                </div>
-            </div>
-
-            <div class="section">
-                <div class="brotherhood-art">
-           /\\/\\ UNITED IN PURPOSE /\\/\\
-          |  ++  BOUND BY POWER  ++  |
-           \\/\\/ MARKED BY FATE \\/\\/
-                </div>
-
-                <div class="observer-note">
-                    I've learned their intent - the Brotherhood plans to seek the Ancient Dragon together. Not as conquerors, but as equals seeking ancient knowledge. The power of their combined arts might just be enough to earn its respect.
-                </div>
-
-                <div class="gem-sketch">
-    /\\=====//\\=====//\\
-      DESTINY BECKONS
-    \\//=====\\//=====\\
-                </div>
-            </div>
-
-            <div class="section">
-                <div class="field-note">
-                    <span class="discovery">Ritual Observations:</span>
-                    → Gem Seeker's crystals align in new patterns<br>
-                    → Combined magics create unprecedented effects<br>
-                    → Ancient symbols appear in the air<br>
-                    → The cave itself seems to breathe with power<br>
-                    → Each master adds their signature to the whole
-                </div>
-
-                <div class="observer-note">
-                    The brotherhood grows stronger each day. Soon they will be ready to face the dragon - not with weapons or violence, but with wisdom and unified purpose. Even from my hidden vantage point, I can feel the power building...
-                </div>
-            </div>
-
-            <div class="notes" style="text-align: right;">
-                ...when they move, I must follow
-            </div>
+<!-- ============== Fitur Utama ============== -->
+<section id="fitur" class="section-fitur">
+  <div class="container">
+    <h2 class="mb-5">Fitur Utama</h2>
+    <div class="row g-4">
+      <div class="col-md-4">
+        <div class="fitur-box">
+          <h4>Dark-Fantasy Lore</h4>
+          <p>
+            Cerita mendalam tentang Gem Finder, Shade, dan Eternal Observer, 
+            yang membawa Anda ke dunia fantasi gelap penuh kejutan.
+          </p>
         </div>
+      </div>
+      <div class="col-md-4">
+        <div class="fitur-box">
+          <h4>Chat-Driven Gameplay</h4>
+          <p>
+            Semua aksi dikendalikan melalui perintah di bot Telegram: mulai dari 
+            membentuk party, memilih skenario, hingga melakukan pertarungan turn-based.
+          </p>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="fitur-box">
+          <h4>Blockchain & Shards</h4>
+          <p>
+            Kumpulkan Shards dan tukarkan dengan Gems (segera hadir). Nantikan 
+            rencana integrasi blockchain di masa depan!
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============== Panduan Langkah demi Langkah ============== -->
+<section id="panduan" class="section-gameplay">
+  <div class="container">
+    <h2 class="text-center mb-4">Panduan Langkah demi Langkah: Cara Bermain</h2>
+    <p class="text-center mb-5">
+      Ikuti instruksi di bawah ini untuk memulai petualangan Anda di GemRaiders. 
+      Pastikan sudah bergabung dengan <a href="https://t.me/GemRaiders" target="_blank" class="text-warning">bot Telegram GemRaiders</a>.
+    </p>
+    
+    <!-- Bagian panduan detail -->
+    <div class="row justify-content-center">
+      <div class="col-md-10">
+        <!-- Step 1 -->
+        <div class="mb-4">
+          <h5><strong>1) Masuk ke Lobby</strong></h5>
+          <p>
+            Gunakan perintah <code>/dungeon_lobby</code> di bot Telegram untuk bergabung dengan global lobby.
+            Anda akan melihat siapa saja yang sedang menunggu di sana. Maksimal 5 pemain dapat membentuk satu grup (party).
+          </p>
+        </div>
+        <!-- Step 2 -->
+        <div class="mb-4">
+          <h5><strong>2) Pilih Skenario Dungeon</strong></h5>
+          <p>
+            Salah satu pemain di party menggunakan perintah <code>/list_dungeons</code> untuk melihat daftar skenario.
+            Lalu pilih salah satu dengan <code>/begin_dungeon &lt;nomor&gt;</code>. 
+            Contoh:
+          </p>
+          <pre><code>/list_dungeons
+/begin_dungeon 2</code></pre>
+          <p>Bot akan membuat dungeon baru dengan ID unik (misalnya ID=1). Semua pemain di lobby otomatis bergabung.</p>
+        </div>
+        <!-- Step 3 -->
+        <div class="mb-4">
+          <h5><strong>3) Tentukan Kelas & Mulai Dungeon</strong></h5>
+          <p>
+            Setiap pemain memilih kelas dengan <code>/set_class &lt;Warrior|Mage|Ranger|Healer&gt;</code>.
+            Setelah semua siap, salah satu pemain bisa memulai dungeon dengan
+            <code>/start_dungeon &lt;ID&gt;</code>, contoh <code>/start_dungeon 1</code>.
+          </p>
+        </div>
+        <!-- Step 4 -->
+        <div class="mb-4">
+          <h5><strong>4) Scene Teks</strong></h5>
+          <p>
+            Jika scene adalah tipe <em>text</em>, ketik <code>/next</code> untuk melanjutkan ke bagian berikutnya. 
+            Kadang scene teks bisa memberikan efek tertentu, seperti menambah HP atau menampilkan cerita.
+          </p>
+        </div>
+        <!-- Step 5 -->
+        <div class="mb-4">
+          <h5><strong>5) Scene Pertarungan (Combat)</strong></h5>
+          <p>
+            Jika scene adalah tipe <em>combat</em> atau <em>boss</em>, Anda perlu mengetik <code>/engage &lt;ID&gt;</code> 
+            untuk memulai pertarungan. Pertarungan bersifat <strong>turn-based</strong>, 
+            jadi setiap giliran Anda bisa menyerang atau menggunakan skill:
+          </p>
+          <ul>
+            <li><code>/dattack &lt;index|boss&gt;</code> - Menyerang musuh.</li>
+            <li><code>/dskill heal</code> - Skill khusus Healer untuk menyembuhkan diri.</li>
+          </ul>
+          <p>
+            Jika semua musuh dikalahkan, lanjutkan ke scene berikutnya dengan <code>/next</code>. 
+            Jika HP Anda habis, run dianggap gagal.
+          </p>
+        </div>
+        <!-- Step 6 -->
+        <div class="mb-4">
+          <h5><strong>6) Penghitungan XP & Shards</strong></h5>
+          <p>
+            Setelah dungeon selesai (berhasil/gagal), Anda tetap memperoleh pengalaman (XP). 
+            Jika berhasil, Anda juga mendapatkan <em>Shards</em>. 
+            Shards dapat dikumpulkan dan nantinya ditukar dengan <em>Gems</em>.
+          </p>
+        </div>
+        <!-- Step 7 -->
+        <div class="mb-4">
+          <h5><strong>7) Stamina & Cooldown</strong></h5>
+          <p>
+            Setiap pemain memiliki <em>stamina</em> harian untuk mencoba dungeon (mis. 1 kali per hari). 
+            Jika habis, Anda harus menunggu reset harian untuk mencoba lagi, 
+            sehingga tidak ada spam dungeon terus menerus.
+          </p>
+        </div>
+      </div>
     </div>
 
-    <!-- Hidden Spoiler Button -->
-    <button class="hidden-spoiler" title="Ancient Secret"></button>
-
-    <!-- Easter Egg Modal -->
-    <div class="easter-egg-modal">
-        <button class="easter-egg-close">×</button>
-        <div class="easter-egg-content">
-            <div class="gem-sketch">
-   .---------.
-  /  SECRET   \
- /  OF THE     \
-|   BROTHERHOOD  |
- \    CAVE     /
-  \           /
-   '---------'
-            </div>
-            <div class="secret-message">
-                ╔════════════════════════════╗
-                ║    HIDDEN TREASURE         ║
-                ╚════════════════════════════╝
-
-                Hail, brave seeker!
-                You've found what remains hidden from many eyes.
-                
-                The ancient scrolls speak:
-                "Only the most attentive ones can perceive
-                the secret signs in the Brotherhood's Cave.
-                To the first who sees, a reward shall be granted
-                from the Brotherhood's treasury."
-
-                To claim your reward:
-                1. Take a screenshot of this message
-                2. Post it on Twitter with @EternalGemFindr tag
-                3. First finder receives 30$ reward
-                
-                Remember: true treasures often lie
-                hidden from prying eyes, 
-                but you've proven your keen sight!
-                
-                P.S. Guard this secret wisely...
-            </div>
+    <!-- Bagian daftar perintah -->
+    <div class="row justify-content-center mt-5">
+      <div class="col-md-10">
+        <h4 class="mb-3">Daftar Perintah Penting</h4>
+        <div class="row">
+          <div class="col-md-6 mb-4">
+            <ul class="list-group">
+              <li class="list-group-item bg-dark text-light">
+                <strong>/start</strong> - Memulai game atau menampilkan tautan referral
+              </li>
+              <li class="list-group-item bg-dark text-light">
+                <strong>/help</strong> - Menampilkan semua perintah
+              </li>
+              <li class="list-group-item bg-dark text-light">
+                <strong>/mystats</strong> - Tampilkan statistikmu
+              </li>
+              <li class="list-group-item bg-dark text-light">
+                <strong>/stats &lt;halaman&gt;</strong> - Menampilkan leaderboard
+              </li>
+              <li class="list-group-item bg-dark text-light">
+                <strong>/myinvite</strong> - Tautan referral pribadi
+              </li>
+              <li class="list-group-item bg-dark text-light">
+                <strong>/travelreport &lt;teks&gt;</strong> - Kirim laporan perjalanan
+              </li>
+            </ul>
+          </div>
+          <div class="col-md-6 mb-4">
+            <ul class="list-group">
+              <li class="list-group-item bg-dark text-light">
+                <strong>/list_dungeons</strong> - Lihat daftar dungeon
+              </li>
+              <li class="list-group-item bg-dark text-light">
+                <strong>/dungeon_lobby</strong> - Bergabung ke lobby global
+              </li>
+              <li class="list-group-item bg-dark text-light">
+                <strong>/ready</strong> / <strong>/unready</strong> - Set status Siap/Tidak Siap
+              </li>
+              <li class="list-group-item bg-dark text-light">
+                <strong>/begin_dungeon &lt;nomor&gt;</strong> - Mulai skenario dungeon
+              </li>
+              <li class="list-group-item bg-dark text-light">
+                <strong>/set_class &lt;Warrior|Mage|Ranger|Healer&gt;</strong>
+              </li>
+              <li class="list-group-item bg-dark text-light">
+                <strong>/next</strong> - Lanjutkan jika scene teks
+              </li>
+              <li class="list-group-item bg-dark text-light">
+                <strong>/engage &lt;ID&gt;</strong> - Memulai scene pertarungan
+              </li>
+              <li class="list-group-item bg-dark text-light">
+                <strong>/dattack &lt;index|boss&gt;</strong> - Menyerang musuh
+              </li>
+              <li class="list-group-item bg-dark text-light">
+                <strong>/dskill &lt;skill&gt;</strong> - Menggunakan skill (contoh: heal)
+              </li>
+            </ul>
+          </div>
         </div>
+      </div>
     </div>
 
-    <script>
-        // Easter Egg Modal Functionality
-        const spoilerBtn = document.querySelector('.hidden-spoiler');
-        const modal = document.querySelector('.easter-egg-modal');
-        const closeBtn = document.querySelector('.easter-egg-close');
+  </div>
+</section>
 
-        spoilerBtn.addEventListener('click', () => {
-            modal.classList.add('active');
-        });
+<!-- ============== Bagian Aksi CTA ============== -->
+<section id="telegram" class="py-5 bg-secondary text-center">
+  <div class="container">
+    <h2>Bergabunglah Sekarang!</h2>
+    <p class="lead mb-4">
+      Klik tombol di bawah ini untuk bergabung dengan komunitas GemRaiders di Telegram.
+      Bentuk party, kumpulkan Shards, dan jadilah legenda di dunia gelap GemRaiders!
+    </p>
+    <a href="https://t.me/GemRaiders" target="_blank" class="btn btn-light btn-lg">
+      Gabung di Telegram
+    </a>
+  </div>
+</section>
 
-        closeBtn.addEventListener('click', () => {
-            modal.classList.remove('active');
-        });
+<!-- ============== Footer ============== -->
+<footer class="footer">
+  <div class="container">
+    <p>&copy; 2025 GemRaiders. Seluruh hak cipta dilindungi.</p>
+  </div>
+</footer>
 
-        // Close modal on clicking outside
-        window.addEventListener('click', (e) => {
-            if (e.target === modal) {
-                modal.classList.remove('active');
-            }
-        });
-        // Add dynamic spider spawning
-        setInterval(() => {
-            const spider = document.createElement('div');
-            spider.className = 'spider';
-            spider.style.left = Math.random() * window.innerWidth + 'px';
-            document.body.appendChild(spider);
-            
-            // Remove spider after animation
-            setTimeout(() => {
-                spider.remove();
-            }, 20000);
-        }, 5000);
-
-        // Add scroll reveal effect
-        const observerOptions = {
-            threshold: 0.1
-        };
-
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('visible');
-                }
-            });
-        }, observerOptions);
-
-        document.querySelectorAll('.section').forEach(section => {
-            section.classList.add('scroll-reveal');
-            observer.observe(section);
-        });
-    </script>
+<!-- Bootstrap JS (CDN) -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
