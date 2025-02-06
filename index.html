@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <!-- Ensures mobile/tablet responsiveness -->
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>GemRaiders — Grand Tournament (Dark Fantasy, Pixel Style)</title>
+  <title>GemRaiders — The Next Chapter</title>
   <style>
     /* ============================
        PIXELATED DARK-FANTASY THEME
@@ -94,14 +94,6 @@
       font-weight: bold;
     }
 
-    /* Lists */
-    ul {
-      margin-left: 1.5rem;
-    }
-    li strong {
-      color: var(--color-highlight);
-    }
-
     /* Footer */
     footer {
       border-top: 1px solid var(--color-border);
@@ -143,144 +135,96 @@
 <body>
 
 <header>
-  <h1>GemRaiders — Grand Tournament</h1>
+  <h1>GemRaiders — The Next Chapter</h1>
   <nav>
     <ul>
-      <li onclick="scrollToSection('intro')">Tournament Intro</li>
-      <li onclick="scrollToSection('social')">Social Rewards</li>
-      <li onclick="scrollToSection('creative')">Creative Contests</li>
-      <li onclick="scrollToSection('game')">Game Prizes</li>
+      <!-- Navigation triggers scroll to specific sections -->
+      <li onclick="scrollToSection('grand-tournament')">Old Tournament Recap</li>
+      <li onclick="scrollToSection('weekly-invite')">Weekly Invite Contest</li>
+      <li onclick="scrollToSection('future-plans')">Future Plans</li>
       <li onclick="scrollToSection('manual')">How to Play</li>
-      <li onclick="scrollToSection('footer')">Contacts</li>
+      <li onclick="scrollToSection('footer')">Our Links</li>
     </ul>
   </nav>
 </header>
 
 <main>
 
-  <!-- INTRO Section -->
-  <section id="intro" class="section">
-    <h2>Welcome to the Grand Tournament</h2>
+  <!-- GRAND TOURNAMENT RECAP -->
+  <section id="grand-tournament" class="section">
+    <h2>The Grand Tournament Has Concluded</h2>
     <p>
-      Beyond the ghostly gates of <span class="highlight">GemRaiders</span>, 
-      a resounding call echoes through the darkness. 
-      The silent watcher, <em>Shade</em>, proclaims the 
-      <strong>Grand Tournament</strong>, spanning seven foreboding nights. 
-      Here, the cunning of social media merges with the lethal raids of
-      <span class="highlight">Gem Raiders The Game</span>.
-    </p>
-    <p>
-      Summon the power of eerie retweets, prove your courage 
-      in the Telegram-based adventure, and carve your path to rewards 
-      whispered of by ancient spirits. Whether you triumph or vanish 
-      into the shadows—only the darkness will decide.
+      Recently, we held a 7-day dark fantasy event that awarded 
+      <strong>over $1000 in total prizes</strong> across social, creative, 
+      and in-game challenges. Our total giveaway since launch now 
+      exceeds <strong>$1500</strong>. Victorious raiders are featured in our 
+      <a href="https://t.me/GemRaiders" target="_blank" style="color: var(--color-accent);">Telegram</a> 
+      and on 
+      <a href="https://x.com/ShadeOnSoul" target="_blank" style="color: var(--color-accent);">X</a>.
     </p>
   </section>
 
-  <!-- SOCIAL REWARDS Section -->
-  <section id="social" class="section">
-    <h2>Social Rewards</h2>
+  <!-- WEEKLY INVITE CONTEST -->
+  <section id="weekly-invite" class="section">
+    <h2>New Challenge: Weekly Invite Contest</h2>
     <p>
-      Trials exist outside the crypt, too. Show your worth: retweet, join our chat, 
-      and earn real USD. But remember, <em>Shade</em> tolerates no deception; 
-      the shadows see all.
+      A fresh wave of darkness beckons. The Weekly Invite Contest begins 
+      <strong>February 6, 2025</strong>, under the vigilant gaze of 
+      <a href="https://t.me/Eternal_Observer_bot" target="_blank" style="color: var(--color-accent);">@Eternal_Observer_bot</a>. 
+      Each soul can retrieve a unique referral link with <code>/myinvite</code>. 
+      Anyone who joins through that link becomes your recruit.
+    </p>
+    <p>
+      Yet the shadows demand true commitment: only those who delve into at 
+      least one dungeon and remain active in our main chat are deemed 
+      <span class="highlight">active referrals</span>. Every Thursday, 
+      the count of your active referrals is tallied, rewarding the top five:
     </p>
     <ul>
-      <li>
-        <strong>First 10 retweets</strong> of the pinned post by 
-        <span class="highlight">@ShadeOnSoul</span> on X 
-        <strong>+ joining our Telegram chat</strong> 
-        (<a href="https://t.me/GemRaiders" target="_blank" style="color: var(--color-accent);">t.me/GemRaiders</a>) 
-        = <strong>$5</strong> each for the quickest 10. 
-        <br>
-        <small>
-          After completing, reply under that pinned post with your Telegram username, 
-          a screenshot proving you joined, and your wallet address. 
-          Hurry, or the darkness may swallow your reward!
-        </small>
-      </li>
-      <li>
-        <strong>Shade’s chosen 10:</strong> 
-        within <em>three days</em> of launch, among all who retweet and join, 
-        <strong>10 random winners</strong> will each receive 
-        <strong>$10</strong>.
-        <br>
-        <small>
-          The same procedure: reply to the pinned post with your Telegram username, 
-          a screenshot of your presence, and your wallet address. 
-          The names of the chosen shall be revealed by the gloom after 3 days.
-        </small>
-      </li>
+      <li><strong>1st place:</strong> $50</li>
+      <li><strong>2nd place:</strong> $20</li>
+      <li><strong>3rd place:</strong> $15</li>
+      <li><strong>4th place:</strong> $10</li>
+      <li><strong>5th place:</strong> $5</li>
     </ul>
+    <p>
+      To check your current standings at any time, invoke <code>/weektop refs</code>. 
+      May the darkness guide your recruits.
+    </p>
   </section>
 
-  <!-- CREATIVE CONTESTS Section -->
-  <section id="creative" class="section">
-    <h2>Creative Contests (Art, Memes, Videos, Stories)</h2>
+  <!-- FUTURE PLANS SECTION -->
+  <section id="future-plans" class="section">
+    <h2>Future Plans</h2>
     <p>
-      Darkness awakens at the sound of your imagination. 
-      For <strong>one week</strong>, unleash your most chilling or witty creations— 
-      art, memes, videos, or haunting stories— all set in the 
-      <strong>dark fantasy realm of GemRaiders</strong>.
-    </p>
-    <p>
-      We will select <strong>8 winners</strong>, each earning <strong>$50</strong>. 
-      Share your submission in our Telegram chat 
-      (<a href="https://t.me/GemRaiders" target="_blank" style="color: var(--color-accent);">t.me/GemRaiders</a>) 
-      or in an upcoming pinned thread.
+      We intend to continue hosting larger-scale tournaments, 
+      bringing even richer treasures for the bravest raiders. 
+      Future weekly contests may include:
     </p>
     <ul>
-      <li>Use GemRaiders lore: crypts, ominous beasts, arcane illusions, 
-          and <em>Shade</em> himself—anything that brings forth dark magnificence.</li>
-      <li>Deadline: next Friday at midnight.</li>
-      <li>We will judge them together, determining whose darkness shines brightest.</li>
-    </ul>
-  </section>
-
-  <!-- THE GAME PRIZES Section -->
-  <section id="game" class="section">
-    <h2>“Gem Raiders The Game” — Tournament Prizes</h2>
-    <p>
-      In the haunted heart of these halls lies 
-      <em>Gem Raiders The Game</em>, 
-      a pixelated labyrinth of nightmares and hidden threats. 
-      Over the coming <strong>week</strong>, your achievements will be richly rewarded:
-    </p>
-    <ul>
-      <li>
-        <strong>3 top places, $100 each</strong> — 
-        to those who achieve the highest <em>player level</em> 
-        by the end of the tournament (in 7 days).
-      </li>
-      <li>
-        <strong>3 prizes of $50 each</strong> — 
-        for the most skilled in bringing <em>active referrals</em>. 
-        The shade will detect fake souls!
-      </li>
+      <li><strong>Level Grind Contest:</strong> Challenge your power to reach new heights.</li>
+      <li><strong>Art & Lore Challenges:</strong> Details are still undetermined, 
+        but the realm stirs with possibility.</li>
     </ul>
     <p>
-      The countdown begins. Collect your daily 
-      <em>stamina</em>, challenge undead guardians, 
-      and prove yourself worthy of the darkest fortunes.
+      More announcements will emerge as the shadows shift. 
+      Stay vigilant—your next challenge may be closer than you think.
     </p>
   </section>
 
   <!-- HOW TO PLAY / MANUAL Section -->
   <section id="manual" class="section">
-    <h2>How to Play Gem Raiders The Game</h2>
+    <h2>How to Play GemRaiders</h2>
     <p>
-      A complete manual for gameplay mechanics and strategy 
+      A complete guide, including leveling secrets and referral mechanics, 
       is available at 
       <a href="https://whitepaper.gemraiders.xyz" target="_blank" style="color: var(--color-accent);">
-      whitepaper.gemraiders.xyz</a>. 
-      There you can learn about the leveling system, referral rewards, 
-      daily challenges, and more.
+      whitepaper.gemraiders.xyz</a>.
     </p>
     <p>
-      Join our Telegram bot 
-      <strong>@GemRaiders</strong> to venture into eerie dungeons and 
-      ruined castles, gather gems, outrun the darkness, 
-      and claim real-world prizes!
+      Summon <strong>@GemRaiders</strong> on Telegram to descend into pixelated crypts, 
+      gather forbidden gems, and evade monstrous foes. 
+      Only cunning raiders survive to claim the spoils.
     </p>
   </section>
 
@@ -288,13 +232,14 @@
 
 <footer id="footer">
   <p>
-    Contact us: 
+    Our Links: 
     <a href="https://t.me/GemRaiders" target="_blank" style="color: var(--color-accent);">Telegram</a> | 
-    <a href="https://x.com/ShadeOnSoul" target="_blank" style="color: var(--color-accent);">@ShadeOnSoul on X</a>
+    <a href="https://x.com/EternalGemFindr" target="_blank" style="color: var(--color-accent);">X: @EternalGemFindr</a> | 
+    <a href="https://x.com/ShadeOnSoul" target="_blank" style="color: var(--color-accent);">X: @ShadeOnSoul</a>
   </p>
   <p>
-    &copy; 2023 GemRaiders. All rights reserved. 
-    The darkness is always near.
+    &copy; 2025 GemRaiders. All rights reserved. 
+    May the shadows be ever in your favor.
   </p>
 </footer>
 
@@ -302,7 +247,7 @@
 <button class="btn-top" onclick="scrollToTop()">↑ Top</button>
 
 <script>
-  // Scroll to a specific section
+  // Scroll to a specific section by ID
   function scrollToSection(sectionId) {
     const element = document.getElementById(sectionId);
     if (element) {
@@ -310,7 +255,7 @@
     }
   }
 
-  // Scroll back to top
+  // Scroll back to the top of the page
   function scrollToTop() {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
