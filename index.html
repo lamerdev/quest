@@ -120,6 +120,28 @@
       opacity: 0.85;
     }
 
+    /* Countdown block */
+    .countdown-wrapper {
+      text-align: center;
+      margin-top: 1rem;
+    }
+    .countdown-title {
+      font-size: 1.1rem;
+      color: var(--color-heading);
+      margin-bottom: 0.5rem;
+      text-shadow: 0 0 2px rgba(0,0,0,0.5);
+    }
+    .countdown {
+      font-size: 1.4rem;
+      color: var(--color-accent);
+      font-weight: bold;
+      background-color: #333;
+      display: inline-block;
+      padding: 0.5rem 1rem;
+      border-radius: 6px;
+      box-shadow: 0 0 5px rgba(0,0,0,0.6);
+    }
+
     /* Responsive for smaller screens */
     @media (max-width: 768px) {
       nav ul {
@@ -140,7 +162,7 @@
     <ul>
       <!-- Navigation triggers scroll to specific sections -->
       <li onclick="scrollToSection('grand-tournament')">Old Tournament Recap</li>
-      <li onclick="scrollToSection('weekly-invite')">Weekly Invite Contest</li>
+      <li onclick="scrollToSection('weekly-art-contest')">Weekly Art Contest</li>
       <li onclick="scrollToSection('future-plans')">Future Plans</li>
       <li onclick="scrollToSection('manual')">How to Play</li>
       <li onclick="scrollToSection('footer')">Our Links</li>
@@ -164,51 +186,54 @@
     </p>
   </section>
 
-  <!-- WEEKLY INVITE CONTEST -->
-  <section id="weekly-invite" class="section">
-    <h2>New Challenge: Weekly Invite Contest</h2>
+  <!-- WEEKLY ART CONTEST SECTION -->
+  <section id="weekly-art-contest" class="section">
+    <h2>New Challenge: Weekly Art Contest</h2>
     <p>
-      A fresh wave of darkness beckons. The Weekly Invite Contest begins 
-      <strong>February 6, 2025</strong>, under the vigilant gaze of 
-      <a href="https://t.me/Eternal_Observer_bot" target="_blank" style="color: var(--color-accent);">@Eternal_Observer_bot</a>. 
-      Each soul can retrieve a unique referral link with <code>/myinvite</code>. 
-      Anyone who joins through that link becomes your recruit.
-    </p>
-    <p>
-      Yet the shadows demand true commitment: only those who delve into at 
-      least one dungeon and remain active in our main chat are deemed 
-      <span class="highlight">active referrals</span>. Every Thursday, 
-      the count of your active referrals is tallied, rewarding the top five:
+      The prize pool is <strong>$100</strong>, divided among 15 winners:
     </p>
     <ul>
-      <li><strong>1st place:</strong> $50</li>
-      <li><strong>2nd place:</strong> $20</li>
-      <li><strong>3rd place:</strong> $15</li>
-      <li><strong>4th place:</strong> $10</li>
-      <li><strong>5th place:</strong> $5</li>
+      <li>5 winners will receive <strong>$10</strong> each</li>
+      <li>10 winners will receive <strong>$5</strong> each</li>
     </ul>
     <p>
-      To check your current standings at any time, invoke <code>/weektop refs</code>. 
-      May the darkness guide your recruits.
+      Conditions to participate:
     </p>
+    <ul>
+      <li>You must follow <strong>@EternalGemFindr</strong> and <strong>@ShadeOnSol</strong> on X</li>
+      <li>Retweet the pinned post by Gem Searcher</li>
+      <li>Create art inspired by our lore (an avatar of your future hero, images, videos, or GIFs)</li>
+      <li>Post a reply mentioning <strong>@ShadeOnSol</strong> with your artwork attached</li>
+    </ul>
+    <p>
+      We finalize results every Thursday and announce the winners. Unleash your creativity—let the shadows amplify your artistry!
+    </p>
+
+    <!-- Countdown Timer Wrapper -->
+    <div class="countdown-wrapper">
+      <div class="countdown-title">Time remaining until next Thursday (3:00 PM US time):</div>
+      <div id="countdown" class="countdown"></div>
+    </div>
   </section>
 
   <!-- FUTURE PLANS SECTION -->
   <section id="future-plans" class="section">
     <h2>Future Plans</h2>
     <p>
-      We intend to continue hosting larger-scale tournaments, 
-      bringing even richer treasures for the bravest raiders. 
-      Future weekly contests may include:
+      We plan to continue hosting large-scale tournaments and reward the bravest raiders with even greater treasures. 
+      Our upcoming weekly contests will possibly include:
     </p>
     <ul>
-      <li><strong>Level Grind Contest:</strong> Challenge your power to reach new heights.</li>
-      <li><strong>Art & Lore Challenges:</strong> Details are still undetermined, 
-        but the realm stirs with possibility.</li>
+      <li><strong>Level Grind Contest:</strong> Push your power to new heights.</li>
+      <li><strong>Referral Contest:</strong> Rally new recruits to join the darkness.</li>
     </ul>
     <p>
-      More announcements will emerge as the shadows shift. 
-      Stay vigilant—your next challenge may be closer than you think.
+      GemRaiders is currently in <strong>alpha</strong> (early stage of development). 
+      You can find more details in our roadmap at 
+      <a href="https://roadmap.gemraiders.xyz" target="_blank" style="color: var(--color-accent);">roadmap.gemraiders.xyz</a>.
+    </p>
+    <p>
+      More announcements will follow. Stay vigilant—your next challenge may be closer than you think.
     </p>
   </section>
 
@@ -258,6 +283,72 @@
   // Scroll back to the top of the page
   function scrollToTop() {
     window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  // Calculate the next Thursday at 3 PM (15:00) US time
+  // For simplicity, we'll assume a fixed offset from UTC, but in production,
+  // you'd handle time zones more dynamically if needed.
+  function getNextThursday15() {
+    const now = new Date();
+    let dayOfWeek = now.getDay(); // Sunday=0, Monday=1, Tuesday=2, Wednesday=3, Thursday=4, etc.
+    let hour = now.getHours();
+
+    // Clone the current date
+    let nextThursday = new Date(now);
+
+    // Calculate how many days until next Thursday
+    let daysToThursday = (4 - dayOfWeek + 7) % 7;
+
+    // If it's already Thursday and past 3 PM, move to the next week's Thursday
+    if (dayOfWeek === 4 && hour >= 15) {
+      daysToThursday = 7;
+    }
+
+    nextThursday.setDate(now.getDate() + daysToThursday);
+    // Set the time to 15:00 (3 PM)
+    nextThursday.setHours(15, 0, 0, 0);
+
+    return nextThursday;
+  }
+
+  let nextDeadline = getNextThursday15();
+
+  // Update countdown every second
+  setInterval(updateCountdown, 1000);
+  updateCountdown(); // initial call
+
+  function updateCountdown() {
+    const now = new Date();
+
+    // If we've passed the current deadline, calculate the next one
+    if (now >= nextDeadline) {
+      nextDeadline = getNextThursday15();
+    }
+
+    // Time difference in milliseconds
+    const diff = nextDeadline - now;
+    // Convert to total seconds
+    let totalSeconds = Math.floor(diff / 1000);
+
+    if (totalSeconds < 0) {
+      // Edge case: if negative, reset to 0 or get new date
+      totalSeconds = 0;
+    }
+
+    // Calculate days, hours, minutes, and seconds
+    const days = Math.floor(totalSeconds / (3600 * 24));
+    totalSeconds %= (3600 * 24);
+
+    const hours = Math.floor(totalSeconds / 3600);
+    totalSeconds %= 3600;
+
+    const minutes = Math.floor(totalSeconds / 60);
+    const seconds = totalSeconds % 60;
+
+    // Output to the countdown element
+    const countdownEl = document.getElementById("countdown");
+    countdownEl.textContent = 
+      `${days}d ${hours}h ${minutes}m ${seconds}s`;
   }
 </script>
 
